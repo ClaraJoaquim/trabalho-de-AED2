@@ -1,4 +1,5 @@
 #include <iostream>
+#define T 3
 
 using namespace std;
 
@@ -46,4 +47,20 @@ struct consulta {
 };
 
 int main () {
+
+    // Definição dos vetores
+    cidade cidades[T];
+    raca racas[T];
+    animal animais[T];
+    tutor tutores[T];
+    veterinario veterinarios[T];
+    consulta consultas[T];
+
+    //Definição dos Contadores
+    int contCidadeS;
+    int contRacaS;
+    int contAnimalS, contAnimalT, contAnimalA;
+    int contTutorS, contTutorT, contTutorA;
+    int contVeterinarioS;
+    int contConsultaS;
 }
