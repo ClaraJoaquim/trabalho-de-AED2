@@ -109,16 +109,131 @@ int main () {
 
 char menu() {
     char opcao;
-    system("cls");
-    cout << "\t\tOpcoes:\n\n";
+    // system("cls");
+    cout << "\t\tOpcões:\n\n";
     cout << "\t\t\t1 - Inserir dados\n\n";
     cout << "\t\t\t2 - Incluir novos dados\n\n";
     cout << "\t\t\t3 - Consultar dados\n\n";
     cout << "\t\t\t4 - Sair do programa\n\n";
-    cout << "\t\tEscolha a opcao: ";
+    cout << "\t\tEscolha a Opção: ";
     cin >> opcao;
 
     return opcao;
+}
+
+void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int &contRacaS,
+             struct animal animais[], int &contAnimalS, struct tutor tutores[], int &contTutorS,
+             struct veterinario veterinarios[], int &contVeterinarioS, struct consulta consultas[],
+             int &contConsultaS) {
+    char conf;
+
+    char opcao;
+    bool loop = true;
+
+    while (loop) {
+        // system("cls");
+        cout << "\tDeseja Realizar a Leitura de qual lista?\n\n";
+        cout << "\n\t1 - Cidade" << endl;
+        cout << "\n\t2 - Raça" << endl;
+        cout << "\n\t3 - Animal" << endl;
+        cout << "\n\t4 - Tutor" << endl;
+        cout << "\n\t5 - Veterinario" << endl;
+        cout << "\n\t6 - Consulta" << endl;
+        cout << "\n\t7 - Sair" << endl;
+        cout << "\n\tEscolha a opcao: ";
+        cin >> opcao;
+
+        cout << "\n\t. Confirma a operação? (S/N): ";
+        cin >> conf;
+
+        if (conf == 'S') {
+            switch (opcao) {
+                case '1': {
+                    if (contCidadeS != 0) {
+                        cout << "A tabela de cidades já foi preenchida!";
+                    } else {
+                        leituraCidades(cidades, contCidadeS);
+                    }
+                    break;
+                }
+                case '2': {
+                    if (contRacaS != 0) {
+                        cout << "A tabela de raças já foi preenchida!";
+                    } else {
+                        leituraRacas(racas, contRacaS);
+                    }
+                    break;
+                }
+                case '3': {
+                    if (contRacaS != 0 && contTutorS != 0) {
+                        leituraAnimais(animais, contAnimalS);
+                    } else if (contRacaS == 0) {
+                        cout << "Para inserir um animal é necessário informar as raças primeiro!" << endl;
+                        cout << "Você será redirecionado para a tela de leitura das raças!";
+                        getch();
+                        leituraRacas(racas, contRacaS);
+                    } else if (contTutorS == 0) {
+                        cout << "Para inserir um animal é necessário informar os tutores primeiro!" << endl;
+                        cout << "Você será redirecionado para a tela de leitura dos tutores!";
+                        getch();
+                        leituraRacas(racas, contRacaS);
+                    }
+                    break;
+                }
+                case '4': {
+                    if (contCidadeS != 0) {
+                        leituraTutores(tutores, contTutorS);
+                    } else {
+                        cout << "Para inserir um tutor é necessário informar as cidades primeiro!" << endl;
+                        cout << "Você será redirecionado para a tela de leitura das cidades!";
+                        getch();
+                        leituraCidades(cidades, contCidadeS);
+                    }
+                    break;
+                }
+                case '5': {
+                    if (contCidadeS != 0) {
+                        leituraVeterinarios(veterinarios, contVeterinarioS);
+
+                    } else {
+                        cout << "Para inserir um veterinário é necessário informar as cidades primeiro!" << endl;
+                        cout << "Você será redirecionado para a tela de leitura das cidades!";
+                        getch();
+                        leituraCidades(cidades, contCidadeS);
+                    }
+                    break;
+                }
+                case '6': {
+                    if (contAnimalS != 0 && contVeterinarioS != 0) {
+                        leituraAnimais(animais, contAnimalS);
+                    } else if (contAnimalS == 0) {
+                        cout << "Para inserir uma consulta é necessário informar os animais primeiro!" << endl;
+                        cout << "Você será redirecionado para a tela de leitura dos animais!";
+                        getch();
+                        leituraRacas(racas, contRacaS);
+                    } else if (contVeterinarioS == 0) {
+                        cout << "Para inserir uma consulta é necessário informar os veterinários primeiro!" << endl;
+                        cout << "Você será redirecionado para a tela de leitura dos veterinários!";
+                        getch();
+                        leituraRacas(racas, contRacaS);
+                    }
+                    break;
+                }
+                case '7': {
+                    opcao = sair();
+                    loop = false;
+                    break;
+                }
+                default: {
+                    cout << "\n\nOpcao invalida. Tecle algo para continuar...";
+                    getch();
+                }
+            }
+        } else {
+            cout << "\n\nOperação cancelada! Voltando para o menu de inserir dados...";
+            getch();
+        }
+    }
 }
 
 char sair() {
@@ -131,67 +246,6 @@ char sair() {
         system("cls");
     }
     return sair;
-}
-
-void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int &contRacaS,
-             struct animal animais[], int &contAnimalS, struct tutor tutores[], int &contTutorS,
-             struct veterinario veterinarios[], int &contVeterinarioS, struct consulta consultas[],
-             int &contConsultaS) {
-    char conf;
-
-    char opcao;
-    system("cls");
-    cout << "\t\tDeseja Realizar a Leitura de qual lista?\n\n";
-    cout << "\n\t1 - Cidade" << endl;
-    cout << "\n\t2 - Raça" << endl;
-    cout << "\n\t3 - Animal" << endl;
-    cout << "\n\t4 - Tutor" << endl;
-    cout << "\n\t5 - Veterinario" << endl;
-    cout << "\n\t6 - Consulta" << endl;
-    cout << "\n\t7 - Sair" << endl;
-    cout << "\n\tEscolha a opcao: ";
-    cin >> opcao;
-
-    cout << "\n\t. Confirma a operação? (S/N): ";
-    cin >> conf;
-
-
-    while (conf == 'S') {
-        switch (opcao) {
-            case '1': {
-                leituraCidades(cidades, contCidadeS);
-                break;
-            }
-            case '2': {
-                leituraRacas(racas, contRacaS);
-                break;
-            }
-            case '3': {
-                leituraAnimais(animais, contAnimalS);
-                break;
-            }
-            case '4': {
-                leituraTutores(tutores, contTutorS);
-                break;
-            }
-            case '5': {
-                leituraVeterinarios(veterinarios, contVeterinarioS);
-                break;
-            }
-            case '6': {
-                leituraConsultas(consultas, contConsultaS);
-                break;
-            }
-            case '7': {
-                opcao = sair();
-                break;
-            }
-            default: {
-                cout << "\n\nOpcao invalida. Tecle algo para continuar...";
-                getch();
-            }
-        }
-    }
 }
 
 
