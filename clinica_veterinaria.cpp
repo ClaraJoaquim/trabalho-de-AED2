@@ -332,6 +332,54 @@ void leituraRacas(struct raca r[], int &contRacaS) {
     contRacaS = i - 1;
 }
 
+void leituraTutores(struct tutor t[], int &contTutorS,
+                    struct cidade c[], int &contCidadeS) {
+    if (contCidadeS == 0) {
+        cout << "\nPara inserir um tutor é necessário informar as cidades primeiro!" << endl;
+        cout << "Você será redirecionado para a tela de leitura das cidades!";
+        getch();
+        leituraCidades(c, contCidadeS);
+    }
+
+    int i = 0;
+    int saida = 1;
+    while (i < T && saida != 0) {
+        int cod;
+        cout << "\nDigite as informações do " << (i + 1) << "º Tutor" << endl;
+        cout << "Codigo: ";
+        cin >> cod;
+
+        if (cod <= 0) {
+            saida = 0;
+        } else if (codigoTutorExiste(t, i, cod)) {
+            cout << "O código " << cod << " já foi inserido, por favor, insira um código válido!";
+        } else {
+            t[i].codigo = cod;
+            if (t[i].codigo > 0) {
+                cin.ignore();
+                cout << "Nome: ";
+                getline(cin, t[i].nome);
+                cout << "CPF: ";
+                cin.getline(t[i].cpf, 14);
+                cout << "Endereco: ";
+                getline(cin, t[i].endereco);
+
+                int codCidade;
+                cout << "Codigo do Cidade: ";
+                cin >> codCidade;
+                while (!codigoCidadeExiste(c, contCidadeS, codCidade)) {
+                    cout << "\nCódigo Inválido! Por favor digite uma cidade válida!";
+                    cout << "\nCodigo da Cidade: ";
+                    cin >> codCidade;
+                }
+                t[i].codigoCidade = codCidade;
+                i++;
+            }
+        }
+    }
+    contTutorS = i - 1;
+}
+
 void leituraAnimais(struct animal a[], int &contAnimalS,
                     struct raca r[], int &contRacaS,
                     struct tutor t[], int &contTutorS,
@@ -366,60 +414,33 @@ void leituraAnimais(struct animal a[], int &contAnimalS,
             if (r[i].codigo > 0) {
                 cin.ignore();
                 cout << "Nome: ";
-                getline(cin, c[i].nome);
+                getline(cin, a[i].nome);
+                int codRaca;
                 cout << "Codigo da Raca: ";
-                cin >> a[i].codigoRaca;
+                cin >> codRaca;
+                while (!codigoRacaExiste(r, contRacaS, codRaca)) {
+                    cout << "\nCódigo Inválido! Por favor digite uma cidade válida!";
+                    cin >> codRaca;
+                }
+                a[i].codigoRaca = codRaca;
                 cout << "Idade: ";
                 cin >> a[i].idade;
                 cout << "Peso: ";
                 cin >> a[i].peso;
+                int codTutor;
                 cout << "Código do Tutor: ";
-                cin >> a[i].codigoTutor;
+                cin >> codTutor;
+                while (!codigoTutorExiste(t, contTutorS, codTutor)) {
+                    cout << "\nCódigo Inválido! Por favor digite uma cidade válida!";
+                    cout << "\nCodigo do Tutor: ";
+                    cin >> codTutor;
+                }
+                a[i].codigoTutor = codTutor;
                 i++;
             }
         }
     }
     contAnimalS = i - 1;
-}
-
-void leituraTutores(struct tutor t[], int &contTutorS,
-                    struct cidade c[], int &contCidadeS) {
-    if (contCidadeS == 0) {
-        cout << "\nPara inserir um tutor é necessário informar as cidades primeiro!" << endl;
-        cout << "Você será redirecionado para a tela de leitura das cidades!";
-        getch();
-        leituraCidades(c, contCidadeS);
-    }
-
-    int i = 0;
-    int saida = 1;
-    while (i < T && saida != 0) {
-        int cod;
-        cout << "\nDigite as informações do " << (i + 1) << "º Tutor" << endl;
-        cout << "Codigo: ";
-        cin >> cod;
-
-        if (cod <= 0) {
-            saida = 0;
-        } else if (codigoTutorExiste(t, i, cod)) {
-            cout << "O código " << cod << " já foi inserido, por favor, insira um código válido!";
-        } else {
-            t[i].codigo = cod;
-            if (t[i].codigo > 0) {
-                cin.ignore();
-                cout << "Nome: ";
-                getline(cin, t[i].nome);
-                cout << "CPF: ";
-                cin.getline(t[i].cpf, 14);
-                cout << "Endereco: ";
-                getline(cin, t[i].endereco);
-                cout << "Codigo do Cidade: ";
-                cin >> t[i].codigoCidade;
-                i++;
-            }
-        }
-    }
-    contTutorS = i - 1;
 }
 
 void leituraVeterinarios(struct veterinario v[], int &contVeterinarioS,
@@ -451,8 +472,15 @@ void leituraVeterinarios(struct veterinario v[], int &contVeterinarioS,
                 getline(cin, v[i].nome);
                 cout << "Endereço: ";
                 getline(cin, v[i].endereco);
-                cout << "Código da Cidade: ";
-                cin >> v[i].codigoCidade;
+                int codCidade;
+                cout << "Codigo da Cidade: ";
+                cin >> codCidade;
+                while (!codigoCidadeExiste(c, contCidadeS, codCidade)) {
+                    cout << "\nCódigo Inválido! Por favor digite uma cidade válida!";
+                    cout << "\nCodigo da Cidade: ";
+                    cin >> codCidade;
+                }
+                v[i].codigoCidade = codCidade;
                 i++;
             }
         }
@@ -494,10 +522,24 @@ void leituraConsultas(struct consulta cons[], int &contConsultaS,
         } else {
             cons[i].codigo = cod;
             if (cons[i].codigo > 0) {
+                int codAnimal;
                 cout << "Código do Animal: ";
-                cin >> cons[i].codigoAnimal;
+                cin >> codAnimal;
+                while (!codigoAnimalExiste(a, contAnimalS, codAnimal)) {
+                    cout << "\nCódigo Inválido! Por favor digite um animal válido!";
+                    cout << "\nCodigo do Animal: ";
+                    cin >> codAnimal;
+                }
+                cons[i].codigoAnimal = codAnimal;
+                int codVeterinario;
                 cout << "Código do Veterinario: ";
-                cin >> cons[i].codigoVeterinario;
+                cin >> codVeterinario;
+                while (!codigoVeterinarioExiste(v, contVeterinarioS, codVeterinario)) {
+                    cout << "\nCódigo Inválido! Por favor digite um veterinário válido!";
+                    cout << "\nCodigo do Veterinario: ";
+                    cin >> codVeterinario;
+                }
+                cons[i].codigoVeterinario = codVeterinario;
                 cout << "Data da Consulta: ";
                 cin >> cons[i].dataConsulta;
                 cout << "Valor da Consulta: ";
@@ -582,7 +624,7 @@ void impressaoConsultas(struct consulta a[], int contConsultaS) {
 //Busca se os códigos (PK) ja existem
 
 bool codigoCidadeExiste(struct cidade c[], int contCidadeS, int cod) {
-    for (int i = 0; i < contCidadeS; i++) {
+    for (int i = 0; i <= contCidadeS; i++) {
         if (c[i].codigo == cod) {
             return true;
         }
@@ -591,7 +633,7 @@ bool codigoCidadeExiste(struct cidade c[], int contCidadeS, int cod) {
 }
 
 bool codigoRacaExiste(struct raca r[], int contRacaS, int cod) {
-    for (int i = 0; i < contRacaS; i++) {
+    for (int i = 0; i <= contRacaS; i++) {
         if (r[i].codigo == cod) {
             return true;
         }
@@ -600,7 +642,7 @@ bool codigoRacaExiste(struct raca r[], int contRacaS, int cod) {
 }
 
 bool codigoTutorExiste(struct tutor t[], int contTutorS, int cod) {
-    for (int i = 0; i < contTutorS; i++) {
+    for (int i = 0; i <= contTutorS; i++) {
         if (t[i].codigo == cod) {
             return true;
         }
@@ -609,7 +651,7 @@ bool codigoTutorExiste(struct tutor t[], int contTutorS, int cod) {
 }
 
 bool codigoAnimalExiste(struct animal a[], int contAnimalS, int cod) {
-    for (int i = 0; i < contAnimalS; i++) {
+    for (int i = 0; i <= contAnimalS; i++) {
         if (a[i].codigo == cod) {
             return true;
         }
@@ -618,7 +660,7 @@ bool codigoAnimalExiste(struct animal a[], int contAnimalS, int cod) {
 }
 
 bool codigoVeterinarioExiste(struct veterinario v[], int contVeterinarioS, int cod) {
-    for (int i = 0; i < contVeterinarioS; i++) {
+    for (int i = 0; i <= contVeterinarioS; i++) {
         if (v[i].codigo == cod) {
             return true;
         }
@@ -627,7 +669,7 @@ bool codigoVeterinarioExiste(struct veterinario v[], int contVeterinarioS, int c
 }
 
 bool codigoConsultaExiste(struct consulta cons[], int contConsultaS, int cod) {
-    for (int i = 0; i < contConsultaS; i++) {
+    for (int i = 0; i <= contConsultaS; i++) {
         if (cons[i].codigo == cod) {
             return true;
         }
@@ -654,3 +696,108 @@ bool buscaBinaria (struct cidade c[],int contCidadeS, int cod){
         return false;
     }
 }
+
+
+//Exercicio 1 (Definir as leituras das tabelas)
+
+// void leituraCidades(struct cidade c[], int &contCidadeS) {
+//     // Dados predefinidos para as cidades
+//     struct cidade cidades[] = {
+//         {1, "São Paulo", "SP"},
+//         {2, "Rio de Janeiro", "RJ"},
+//         {3, "Belo Horizonte", "MG"}
+//     };
+//
+//     // Copiar dados para o array de cidades
+//     for (int i = 0; i < 3; i++) {
+//         c[i] = cidades[i];
+//     }
+//
+//     contCidadeS = 3;  // Número total de cidades inseridas
+// }
+//
+// void leituraRacas(struct raca r[], int &contRacaS) {
+//     // Dados predefinidos para as raças
+//     struct raca racas[] = {
+//         {1, "Labrador"},
+//         {2, "Poodle"},
+//         {3, "Bulldog"}
+//     };
+//
+//     // Copiar dados para o array de raças
+//     for (int i = 0; i < 3; i++) {
+//         r[i] = racas[i];
+//     }
+//
+//     contRacaS = 3;  // Número total de raças inseridas
+// }
+//
+// void leituraAnimais(struct animal a[], int &contAnimalS,
+//                     struct raca r[], int &contRacaS,
+//                     struct tutor t[], int &contTutorS,
+//                     struct cidade c[], int &contCidadeS) {
+//     // Dados predefinidos para os animais
+//     struct animal animais[] = {
+//         {1, "Rex", 1, 5, 10.5, 101},
+//         {2, "Bella", 2, 3, 8.0, 102}
+//     };
+//
+//     // Copiar dados para o array de animais
+//     for (int i = 0; i < 2; i++) {
+//         a[i] = animais[i];
+//     }
+//
+//     contAnimalS = 2;  // Número total de animais inseridos
+// }
+//
+// void leituraTutores(struct tutor t[], int &contTutorS,
+//                     struct cidade c[], int &contCidadeS) {
+//     // Dados predefinidos para os tutores
+//     struct tutor tutores[] = {
+//         {101, "Carlos", "12345678900", "Rua A", 1},
+//         {102, "Maria", "98765432100", "Rua B", 2}
+//     };
+//
+//     // Copiar dados para o array de tutores
+//     for (int i = 0; i < 2; i++) {
+//         t[i] = tutores[i];
+//     }
+//
+//     contTutorS = 2;  // Número total de tutores inseridos
+// }
+//
+// void leituraVeterinarios(struct veterinario v[], int &contVeterinarioS,
+//                         struct cidade c[], int &contCidadeS) {
+//     // Dados predefinidos para os veterinários
+//     struct veterinario veterinarios[] = {
+//         {201, "Dr. João", "Rua X", 1},
+//         {202, "Dra. Ana", "Rua Y", 2}
+//     };
+//
+//     // Copiar dados para o array de veterinários
+//     for (int i = 0; i < 2; i++) {
+//         v[i] = veterinarios[i];
+//     }
+//
+//     contVeterinarioS = 2;  // Número total de veterinários inseridos
+// }
+//
+// void leituraConsultas(struct consulta cons[], int &contConsultaS,
+//                     struct animal a[], int &contAnimalS,
+//                     struct veterinario v[], int &contVeterinarioS,
+//                     struct raca r[], int &contRacaS,
+//                     struct cidade c[], int &contCidadeS,
+//                     struct tutor t[], int contTutorS) {
+//     // Dados predefinidos para as consultas
+//     struct consulta consultas[] = {
+//         {1, 1, 201, 1682821800, 150.0},  // Exemplo de data em formato time_t
+//         {2, 2, 202, 1682908200, 200.0}
+//     };
+//
+//     // Copiar dados para o array de consultas
+//     for (int i = 0; i < 2; i++) {
+//         cons[i] = consultas[i];
+//     }
+//
+//     contConsultaS = 2;  // Número total de consultas inseridas
+// }
