@@ -1,6 +1,8 @@
 #include <iostream>
 #include <clocale>
 #include <conio.h>
+#include <thread>
+#include <vector>
 #define T 5
 
 using namespace std;
@@ -47,6 +49,8 @@ struct consulta {
     time_t dataConsulta;
     float valorConsulta;
 };
+void textoInicial();
+
 
 void leituraCidades(struct cidade cidades[], int &contCidadeS);
 
@@ -76,7 +80,7 @@ void impressaoRacas(struct raca r[], int contRacaS);
 
 void impressaoAnimais(struct animal a[], int contAnimalS);
 
-void impressaoTutores(struct tutor a[], int contTutorS, struct cidade c[], int contCidadeS);
+void impressaoTutores(struct tutor t[], int contTutorS, struct cidade c[], int contCidadeS);
 
 void impressaoVeterinarios(struct veterinario a[], int contVeterinarioS);
 
@@ -96,6 +100,14 @@ bool codigoConsultaExiste(struct consulta cons[], int contConsultaS, int cod);
 
 void buscaBinariaCidade(struct cidade c[], int contCidadeS, int cod);
 
+void buscaBinariaRaca(struct raca r[], int contRacaS, int cod);
+
+void buscaBinariaTutor(struct tutor t[], int contTutorS, int codTutor);
+
+void buscaBinariaAnimal(struct animal a[], int contAnimalS, int codAnimal);
+
+void buscaBinariaVeterinario(struct veterinario v[], int contVeterinarioS, int codVeterinario);
+
 char menu();
 
 void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int &contRacaS,
@@ -113,6 +125,8 @@ char sair();
 int main() {
     setlocale(LC_ALL, "Portuguese");
 
+    textoInicial();
+
     // Definição dos vetores
     cidade cidades[T];
     raca racas[T];
@@ -128,19 +142,6 @@ int main() {
     int contTutorS = 0, contTutorT = 0, contTutorA = 0;
     int contVeterinarioS = 0;
     int contConsultaS = 0;
-
-    // leituraCidades(cidades, contCidadeS);
-    // leituraRacas(racas, contRacaS);
-    // leituraTutores(tutores, contTutorS, cidades, contCidadeS);
-    // leituraVeterinarios(veterinarios, contVeterinarioS, cidades, contCidadeS);
-    // leituraAnimais(animais, contAnimalS, racas, contRacaS, tutores, contTutorS, cidades, contCidadeS);
-    // leituraConsultas(consultas, contConsultaS, animais, contAnimalS, veterinarios, contVeterinarioS, racas, contRacaS, cidades, contCidadeS, tutores, contTutorS);
-    // impressaoCidades(cidades, contCidadeS);
-    // impressaoRacas(racas, contRacaS);
-    // impressaoTutores(tutores, contTutorS);
-    // impressaoVeterinarios(veterinarios, contVeterinarioS);
-    // impressaoAnimais(animais, contAnimalS);
-    // impressaoConsultas(consultas, contConsultaS);
 
     //Menu
     char opcao = 'N';
@@ -175,7 +176,7 @@ int main() {
 char menu() {
     char opcao;
     // system("cls");
-    cout << "\t\tOpcões:\n\n";
+    cout << "\n\t\tOpcões:\n\n";
     cout << "\t\t\t1 - Inserir dados\n\n";
     cout << "\t\t\t2 - Imprimir dados\n\n";
     cout << "\t\t\t3 - Consultar dados\n\n";
@@ -470,7 +471,7 @@ void leituraTutores(struct tutor t[], int &contTutorS,
                 getline(cin, t[i].endereco);
 
                 int codCidade;
-                cout << "Codigo do Cidade: ";
+                cout << "Codigo da Cidade: ";
                 cin >> codCidade;
                 while (!codigoCidadeExiste(c, contCidadeS, codCidade)) {
                     cout << "\nCódigo Inválido! Por favor digite uma cidade válida!";
@@ -532,6 +533,7 @@ void leituraAnimais(struct animal a[], int &contAnimalS,
                     cout << "\nCódigo Inválido! Por favor digite uma cidade válida!";
                     cin >> codRaca;
                 }
+                buscaBinariaRaca(r,contRacaS, codRaca);
                 a[i].codigoRaca = codRaca;
                 cout << "Idade: ";
                 cin >> a[i].idade;
@@ -545,6 +547,7 @@ void leituraAnimais(struct animal a[], int &contAnimalS,
                     cout << "\nCodigo do Tutor: ";
                     cin >> codTutor;
                 }
+                buscaBinariaTutor(t, contTutorS, codTutor);
                 a[i].codigoTutor = codTutor;
                 i++;
             }
@@ -635,6 +638,7 @@ void leituraConsultas(struct consulta cons[], int &contConsultaS,
             cout << "\nCodigo do Animal: ";
             cin >> codAnimal;
         }
+        buscaBinariaAnimal(a, contAnimalS, codAnimal);
         cons[i].codigoAnimal = codAnimal;
         int codVeterinario;
         cout << "Código do Veterinario: ";
@@ -644,6 +648,7 @@ void leituraConsultas(struct consulta cons[], int &contConsultaS,
             cout << "\nCodigo do Veterinario: ";
             cin >> codVeterinario;
         }
+        buscaBinariaVeterinario(v, contVeterinarioS, codVeterinario);
         cons[i].codigoVeterinario = codVeterinario;
         cout << "Data da Consulta: ";
         cin >> cons[i].dataConsulta;
@@ -799,8 +804,69 @@ void buscaBinariaCidade(struct cidade c[], int contCidadeS, int cod) {
             f = m - 1;
     }
     if (cod == c[m].codigo) {
-        cout << "\tNome: " << c[m].nome;
-        cout << "\tEStado: " << c[m].uf;
+        cout << "\t----- Dados da Cidade -----";
+        cout << "\n\tNome: " << c[m].nome;
+        cout << "\n\tEstado: " << c[m].uf << endl;
+    }
+}
+
+void buscaBinariaRaca(struct raca r[], int contRacaS, int cod) {
+    int i = 0, f = contRacaS;
+    int m = (i + f) / 2;
+    for (; f > i && cod != r[m].codigo; m = (i + f) / 2) {
+        if (cod > r[m].codigo)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (cod == r[m].codigo) {
+        cout << "\t----- Dados da Raça -----";
+        cout << "\n\tDescrição: " << r[m].descricao << endl;
+    }
+}
+
+void buscaBinariaTutor(struct tutor t[], int contTutorS, int codTutor) {
+    int i = 0, f = contTutorS;
+    int m = (i + f) / 2;
+    for (; f > i && codTutor != t[m].codigo; m = (i + f) / 2) {
+        if (codTutor > t[m].codigo)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (codTutor == t[m].codigo) {
+        cout << "\t----- Dados do Tutor -----";
+        cout << "\n\tNome: " << t[m].nome << endl;
+    }
+}
+
+void buscaBinariaAnimal(struct animal a[], int contAnimalS, int codAnimal) {
+    int i = 0, f = contAnimalS;
+    int m = (i + f) / 2;
+    for (; f > i && codAnimal != a[m].codigo; m = (i + f) / 2) {
+        if (codAnimal > a[m].codigo)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (codAnimal == a[m].codigo) {
+        cout << "\t----- Dados do Animal -----";
+        cout << "\n\tNome: " << a[m].nome << endl;
+    }
+}
+
+void buscaBinariaVeterinario(struct veterinario v[], int contVeterinarioS, int codVeterinario) {
+    int i = 0, f = contVeterinarioS;
+    int m = (i + f) / 2;
+    for (; f > i && codVeterinario != v[m].codigo; m = (i + f) / 2) {
+        if (codVeterinario > v[m].codigo)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if (codVeterinario == v[m].codigo) {
+        cout << "\t----- Dados do Veterinário -----";
+        cout << "\n\tNome: " << v[m].nome << endl;
     }
 }
 
@@ -908,3 +974,28 @@ void buscaBinariaCidade(struct cidade c[], int contCidadeS, int cod) {
 //
 //     contConsultaS = 2;  // Número total de consultas inseridas
 // }
+
+
+void textoInicial() {
+    std::vector<char> textoBemVindo = {
+        '=', '=', '=', '=', '[',
+        'B', 'e', 'm', ' ', 'V', 'i', 'n', 'd', 'o', ' ', 'à', ' ',
+        'C', 'l', 'í', 'n', 'i', 'c', 'a', ' ',
+        'V', 'e', 't', 'e', 'r', 'i', 'n', 'á', 'r', 'i', 'a',
+        ']', '=', '=', '=', '='
+    };
+
+    for (int i = 0; i < textoBemVindo.size(); i++) {
+        for (int j = 0; j <= i; j++) {
+            if(j == 0) {
+                std::cout << "\t\t\t\t" << textoBemVindo[j];
+            } else {
+                std::cout << textoBemVindo[j];
+            }
+            std::this_thread::sleep_for(std::chrono::nanoseconds(100000));
+        }
+        if (i < textoBemVindo.size() - 1) {
+            system("cls");
+        }
+    }
+}
