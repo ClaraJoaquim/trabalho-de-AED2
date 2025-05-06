@@ -3,11 +3,12 @@
 #include <conio.h>
 #include <thread>
 #include <vector>
-#include <cstring>
 #include <regex>
 #define Y 10
 
 using namespace std;
+
+// Definição das Structs
 
 struct cidade {
     int codigo;
@@ -51,8 +52,12 @@ struct consulta {
     time_t dataConsulta;
     float valorConsulta;
 };
+
+// Função para exibir o texto inicial
+
 void textoInicial();
 
+// Funções para leitura das tabelas
 
 void leituraCidades(struct cidade cidades[], int &contCidadeS);
 
@@ -76,6 +81,8 @@ void leituraConsultas(struct consulta cons[], int &contConsultaS,
                       struct cidade c[], int &contCidadeS,
                       struct tutor t[], int &contTutoreS);
 
+// Funções para impressão das tabelas
+
 void impressaoCidades(struct cidade c[], int contCidadeS);
 
 void impressaoRacas(struct raca r[], int contRacaS);
@@ -87,6 +94,8 @@ void impressaoTutores(struct tutor t[], int contTutorS, struct cidade c[], int c
 void impressaoVeterinarios(struct veterinario a[], int contVeterinarioS);
 
 void impressaoConsultas(struct consulta a[], int contConsultaS);
+
+// Funções para verificar se o código (pk) já existe
 
 bool codigoCidadeExiste(struct cidade c[], int contCidadeS, int cod);
 
@@ -100,6 +109,8 @@ bool codigoVeterinarioExiste(struct veterinario v[], int contVeterinarioS, int c
 
 bool codigoConsultaExiste(struct consulta cons[], int contConsultaS, int cod);
 
+// Funções de Busca Binária
+
 void buscaBinariaCidade(struct cidade c[], int contCidadeS, int cod);
 
 void buscaBinariaRaca(struct raca r[], int contRacaS, int cod);
@@ -110,6 +121,8 @@ void buscaBinariaAnimal(struct animal a[], int contAnimalS, int codAnimal, int &
 
 int buscaBinariaVeterinario(struct veterinario v[], int contVeterinarioS, int codVeterinario);
 
+// Funções para validar o cpf
+
 string limparCPF(const string& cpf);
 
 string formatarCPF(const string& cpfEntrada);
@@ -117,6 +130,8 @@ string formatarCPF(const string& cpfEntrada);
 bool validarCPF(const string& cpfEntrada);
 
 bool cpfExiste(struct tutor t[], int contTutorS, string cpf);
+
+// Funções do menu
 
 char menu();
 
@@ -135,18 +150,23 @@ void incluir(struct animal animais[], int &contAnimalS, struct animal animaisT[]
              struct tutor tutoresT[], int contTutorT, struct tutor tutoresA[], int &contTutorA,
              struct cidade cidades[], int &contCidadeS, struct raca racas[], int &contRacaS);
 
+char sair();
+
+//Funções de Inclusão
+
 void inclusaoTutor (struct tutor S[], int contS, struct tutor T[], int contT, struct tutor A[], int &contA);
 
 void inclusaoAnimal (struct animal S[], int contS, struct animal T[], int contT, struct animal A[], int &contA);
 
-char sair();
-
 int main() {
+
+    //Definir linguagem do programa
     setlocale(LC_ALL, "Portuguese");
 
     textoInicial();
 
     // Definição dos vetores
+
     cidade cidades[Y];
     raca racas[Y];
     animal animais[Y];
@@ -159,6 +179,7 @@ int main() {
     consulta consultas[Y];
 
     //Definição dos Contadores
+
     int contCidadeS = 0;
     int contRacaS = 0;
     int contAnimalS = 0, contAnimalT, contAnimalA;
@@ -167,6 +188,7 @@ int main() {
     int contConsultaS = 0;
 
     //Menu
+
     char opcao = 'N';
     while (opcao != 'S' || opcao == 's') {
         opcao = menu();
@@ -202,7 +224,7 @@ int main() {
 
 char menu() {
     char opcao;
-    // system("cls");
+    system("cls");
     cout << "\n\t\tOpções:\n\n";
     cout << "\t\t\t1 - Inserir dados\n\n";
     cout << "\t\t\t2 - Incluir Novos Dados\n\n";
@@ -224,7 +246,7 @@ void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int
     bool loop = true;
 
     while (loop) {
-        // system("cls");
+        system("cls");
         cout << "\n\tDeseja Realizar a Leitura de qual lista?\n\n";
         cout << "\n\t1 - Cidade" << endl;
         cout << "\n\t2 - Raça" << endl;
@@ -329,7 +351,7 @@ void incluir(struct animal animais[], int &contAnimalS, struct animal animaisT[]
     bool loop = true;
 
     while (loop) {
-        // system("cls");
+        system("cls");
         cout << "\n\tDeseja Realizar a Inclusão de qual lista?\n\n";
         cout << "\n\t1 - Tutor" << endl;
         cout << "\n\t2 - Animal" << endl;
@@ -404,7 +426,7 @@ void imprimir(struct cidade cidades[], int &contCidadeS, struct raca racas[], in
     bool loop = true;
 
     while (loop) {
-        // system("cls");
+        system("cls");
         cout << "\n\tDeseja Realizar a Impressão de qual lista?\n\n";
         cout << "\n\t1 - Cidade" << endl;
         cout << "\n\t2 - Raça" << endl;
@@ -879,7 +901,7 @@ void impressaoConsultas(struct consulta a[], int contConsultaS) {
     }
 }
 
-//Busca se os códigos (PK) ja existem
+// Funções para verificar se os códigos (PK) ja existem
 
 bool codigoCidadeExiste(struct cidade c[], int contCidadeS, int cod) {
     for (int i = 0; i <= contCidadeS; i++) {
@@ -1027,7 +1049,7 @@ int buscaBinariaVeterinario(struct veterinario v[], int contVeterinarioS, int co
     return v[m].codigoCidade;
 }
 
-// Métodos de Inclusão
+// Funções para inclusão
 
 void inclusaoTutor (struct tutor S[], int contS, struct tutor T[], int contT, struct tutor A[], int &contA) {
     int i = 0, j = 0, k = 0;
@@ -1117,6 +1139,8 @@ void inclusaoAnimal (struct animal S[], int contS, struct animal T[], int contT,
     contA = k;
 }
 
+// Função de Mostar texto inicial no menu
+
 void textoInicial() {
     std::vector<char> textoBemVindo = {
         '=', '=', '=', '=', '[',
@@ -1140,6 +1164,8 @@ void textoInicial() {
         }
     }
 }
+
+// Funções para validar CPF
 
 string limparCPF(const string& cpf) {
     string apenasNumeros;
