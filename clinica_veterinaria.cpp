@@ -4,6 +4,7 @@
 #include <thread>
 #include <vector>
 #include <cstring>
+#include <regex>
 #define Y 10
 
 using namespace std;
@@ -31,7 +32,7 @@ struct animal {
 struct tutor {
     int codigo;
     string nome;
-    char cpf[14];
+    string cpf;
     string endereco;
     int codigoCidade;
 };
@@ -108,6 +109,14 @@ void buscaBinariaTutor(struct tutor t[], int contTutorS, int codTutor);
 void buscaBinariaAnimal(struct animal a[], int contAnimalS, int codAnimal);
 
 void buscaBinariaVeterinario(struct veterinario v[], int contVeterinarioS, int codVeterinario);
+
+string limparCPF(const string& cpf);
+
+string formatarCPF(const string& cpfEntrada);
+
+bool validarCPF(const string& cpfEntrada);
+
+bool cpfExiste(struct tutor t[], int contTutorS, string cpf);
 
 char menu();
 
@@ -559,7 +568,17 @@ void leituraTutores(struct tutor t[], int &contTutorS,
                 cout << "Nome: ";
                 getline(cin, t[i].nome);
                 cout << "CPF: ";
-                cin.getline(t[i].cpf, 14);
+                getline(cin, t[i].cpf);
+                while (!validarCPF(t[i].cpf)) {
+                    cout << "\nO CPF que você digitou não é válido!\nPor favor digite um cpf válido";
+                    cout << "\nCPF: ";
+                    getline(cin, t[i].cpf);
+                }
+                while (cpfExiste(t, i, t[i].cpf)) {
+                    cout << "\nEste CPF já existe!\nPor favor digite um cpf válido";
+                    cout << "\nCPF: ";
+                    getline(cin, t[i].cpf);
+                }
                 cout << "Endereco: ";
                 getline(cin, t[i].endereco);
 
@@ -845,7 +864,7 @@ bool codigoRacaExiste(struct raca r[], int contRacaS, int cod) {
 }
 
 bool codigoTutorExiste(struct tutor t[], int contTutorS, int cod) {
-    for (int i = 0; i <= contTutorS; i++) {
+    for (int i = 0; i < contTutorS; i++) {
         if (t[i].codigo == cod) {
             return true;
         }
@@ -874,6 +893,16 @@ bool codigoVeterinarioExiste(struct veterinario v[], int contVeterinarioS, int c
 bool codigoConsultaExiste(struct consulta cons[], int contConsultaS, int cod) {
     for (int i = 0; i <= contConsultaS; i++) {
         if (cons[i].codigo == cod) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool cpfExiste(struct tutor t[], int contTutorS, string cpf) {
+    cpf = limparCPF(cpf);
+    for (int i = 0; i < contTutorS; i++) {
+        if (t[i].cpf == cpf) {
             return true;
         }
     }
@@ -967,7 +996,7 @@ void inclusaoTutor (struct tutor S[], int contS, struct tutor T[], int contT, st
             A[k].codigo = S[i].codigo;
             A[k].nome = S[i].nome;
             A[k].codigoCidade = S[i].codigoCidade;
-            strcpy(A[k].cpf, S[i].cpf);
+            A[k].cpf = S[i].cpf;
             A[k].endereco = S[i].endereco;
             i++;
         }
@@ -975,7 +1004,7 @@ void inclusaoTutor (struct tutor S[], int contS, struct tutor T[], int contT, st
             A[k].codigo = T[j].codigo;
             A[k].nome = T[j].nome;
             A[k].codigoCidade = T[j].codigoCidade;
-            strcpy(A[k].cpf, T[j].cpf);
+            A[k].cpf = T[j].cpf;
             A[k].endereco = T[j].endereco;
             j++;
         }
@@ -985,7 +1014,7 @@ void inclusaoTutor (struct tutor S[], int contS, struct tutor T[], int contT, st
         A[k].codigo = S[i].codigo;
         A[k].nome = S[i].nome;
         A[k].codigoCidade = S[i].codigoCidade;
-        strcpy(A[k].cpf, S[i].cpf);
+        A[k].cpf = S[i].cpf;
         A[k].endereco = S[i].endereco;
         i++;
         k++;
@@ -994,7 +1023,7 @@ void inclusaoTutor (struct tutor S[], int contS, struct tutor T[], int contT, st
         A[k].codigo = T[j].codigo;
         A[k].nome = T[j].nome;
         A[k].codigoCidade = T[j].codigoCidade;
-        strcpy(A[k].cpf, T[j].cpf);
+        A[k].cpf = T[j].cpf;
         A[k].endereco = T[j].endereco;
         j++;
         k++;
@@ -1070,4 +1099,54 @@ void textoInicial() {
             system("cls");
         }
     }
+}
+
+string limparCPF(const string& cpf) {
+    string apenasNumeros;
+    for (char c : cpf) {
+        if (isdigit(c)) {
+            apenasNumeros += c;
+        }
+    }
+    return apenasNumeros;
+}
+
+string formatarCPF(const string& cpfEntrada) {
+    string cpf = limparCPF(cpfEntrada);
+
+    return cpf.substr(0, 3) + "." +
+           cpf.substr(3, 3) + "." +
+           cpf.substr(6, 3) + "-" +
+           cpf.substr(9, 2);
+}
+
+bool validarCPF(const string& cpfEntrada) {
+    string cpf = limparCPF(cpfEntrada);
+
+    if (cpf.length() != 11 || regex_match(cpf, regex(R"((\d)\1{10})"))) {
+        return false;
+    }
+
+    int digitos[11];
+    for (int i = 0; i < 11; ++i) {
+        digitos[i] = cpf[i] - '0';
+    }
+
+    // Primeiro verificador
+    int soma = 0;
+    for (int i = 0; i < 9; ++i) {
+        soma += digitos[i] * (10 - i);
+    }
+    int resto = soma % 11;
+    int digito1 = (resto < 2) ? 0 : 11 - resto;
+
+    // Segundo verificador
+    soma = 0;
+    for (int i = 0; i < 10; ++i) {
+        soma += digitos[i] * (11 - i);
+    }
+    resto = soma % 11;
+    int digito2 = (resto < 2) ? 0 : 11 - resto;
+
+    return (digito1 == digitos[9] && digito2 == digitos[10]);
 }
