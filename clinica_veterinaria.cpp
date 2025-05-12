@@ -169,6 +169,64 @@ void inclusaoTutor (struct tutor S[], int &contS, struct tutor T[], int contT, s
 
 void inclusaoAnimal (struct animal S[], int &contS, struct animal T[], int contT, struct animal A[], int &contA);
 
+// Validação de Data
+
+// Validação de Data
+void verificarData(std::string &dia);
+bool diaValido(int dd, int mm, int yy);
+time_t converterParaTimeT(std::string diaParaSerConvertido);
+
+// Impressão
+void imprimirBuscaPorConsultasEntreDatas(struct consulta consultaVerificada[], int &contConsultaDataVerificadas);
+
+// Verificação entre datas (com e sem filtro por veterinário)
+void verificarEntreDatas(struct consulta consulta[],
+                         struct consulta consultaVerificada[],
+                         int &contConsultaS,
+                         time_t dataInicial,
+                         time_t dataFinal,
+                         int &contConsultaDataVerificadas,
+                         struct animal a[], int &contAnimalS,
+                         struct veterinario v[], int &contVeterinarioS,
+                         struct raca r[], int &contRacaS,
+                         struct cidade c[], int &contCidadeS,
+                         struct tutor t[], int &contTutoreS);
+
+void verificarEntreDatasEVeterinario(struct consulta consulta[],
+                                     struct consulta consultaVerificada[],
+                                     int &contConsultaS,
+                                     time_t dataInicial,
+                                     time_t dataFinal,
+                                     int &contConsultaDataVerificadas,
+                                     int codigoVet,
+                                     struct animal a[], int &contAnimalS,
+                                     struct veterinario v[], int &contVeterinarioS,
+                                     struct raca r[], int &contRacaS,
+                                     struct cidade c[], int &contCidadeS,
+                                     struct tutor t[], int &contTutoreS);
+
+// Busca de consultas entre datas
+void buscarConsultaEntreDatas(struct consulta consulta[],
+                               struct consulta consultaA[],
+                               int &contConsultaS,
+                               int &contConsultaDataVerificadas,
+                               struct animal a[], int &contAnimalS,
+                               struct veterinario v[], int &contVeterinarioS,
+                               struct raca r[], int &contRacaS,
+                               struct cidade c[], int &contCidadeS,
+                               struct tutor t[], int &contTutoreS);
+
+void buscarConsultaEntreDatasEVeterinario(struct consulta consulta[],
+                                          struct consulta consultaA[],
+                                          int &contConsultaS,
+                                          int &contConsultaDataVerificadas,
+                                          struct animal a[], int &contAnimalS,
+                                          struct veterinario v[], int &contVeterinarioS,
+                                          struct raca r[], int &contRacaS,
+                                          struct cidade c[], int &contCidadeS,
+                                          struct tutor t[], int &contTutoreS);
+
+
 int main() {
 
     //Definir linguagem do programa
@@ -453,12 +511,14 @@ void imprimir(struct cidade cidades[], int &contCidadeS,
         cout << "\n\t4 - Animal" << endl;
         cout << "\n\t5 - Veterinario" << endl;
         cout << "\n\t6 - Consulta" << endl;
-        cout << "\n\t7 - Voltar ao menu Principal" << endl;
-        cout << "\n\t8 - Sair" << endl;
+        cout << "\n\t7 - Consultar por datas" << endl;
+        cout << "\n\t8 - Consultar por datas e veterinário" << endl;
+        cout << "\n\t9 - Voltar ao menu Principal" << endl;
+        cout << "\n\t10 - Sair" << endl;
         cout << "\n\tEscolha a opcao: ";
         cin >> opcao;
 
-        if (opcao == '8') {
+        if (opcao == 10) {
             opcao = sair();
             loop = false;
         } else {
@@ -530,8 +590,44 @@ void imprimir(struct cidade cidades[], int &contCidadeS,
                     break;
                 }
                 case '7': {
+                    if (contConsultaS != 0) {
+                        buscarConsultaEntreDatas(consultas, consultas, contConsultaS, contConsultaDataVerificadas,
+                          animalS, contAnimalS,
+                          veterinarios, contVeterinarioS,
+                          racas, contRacaS,
+                          cidades, contCidadeS,
+                          tutoresS, contTutorS);
+                    } else {
+                        cout <<"\n====================================================================================="<< endl;
+                        cout << "\n\tA leitura de consultas ainda não foi realizada!"<<endl;
+                        cout << "\tVocê será redirecionado para a tela de leitura de consultas!"<<endl;
+                        leituraConsultas(consultas, contConsultaS, animalS, contAnimalS, veterinarios, contVeterinarioS, racas, contRacaS, cidades, contCidadeS, tutoresS, contTutorS);
+                    }
+                    break;
+                }
+                case '8': {
+                    if (contConsultaS != 0) {
+                        buscarConsultaEntreDatasEVeterinario(consultas, consultas, contConsultaS, contConsultaDataVerificadas,
+                          animalS, contAnimalS,
+                          veterinarios, contVeterinarioS,
+                          racas, contRacaS,
+                          cidades, contCidadeS,
+                          tutoresS, contTutorS);
+                    } else {
+                        cout <<"\n====================================================================================="<< endl;
+                        cout << "\n\tA leitura de consultas ainda n?o foi realizada!"<<endl;
+                        cout << "\tVoc? ser? redirecionado para a tela de leitura de consultas!"<<endl;
+                        leituraConsultas(consultas, contConsultaS, animalS, contAnimalS, veterinarios, contVeterinarioS, racas, contRacaS, cidades, contCidadeS, tutoresS, contTutorS);
+                    }
+                    break;
+                }
+                case '9': {
                     loop = false;
                     break;
+                }
+                case 10: {
+                    opcao = sair();
+                    loop = false;
                 }
                 default: {
                     cout << "\n\nOpcao invalida. Tecle algo para continuar...";
@@ -854,6 +950,9 @@ void leituraConsultas(struct consulta cons[], int &contConsultaS,
         string dia;
         cout << "\n\tData da Consulta (FORMATO dd/MM/yyyy): "<<endl;
         cin >> dia;
+        cin.ignore();
+        verificarData(dia);
+        cons[i].dataConsulta = converterParaTimeT(dia);
         cout << "\tValor da Consulta: ";
         cin >> cons[i].valorConsulta;
         cout << "\tDeseja adicionar mais consultas? (S/N)";
@@ -1306,4 +1405,162 @@ bool validarCPF(const string& cpfEntrada) {
     int digito2 = (resto < 2) ? 0 : 11 - resto;
 
     return (digito1 == digitos[9] && digito2 == digitos[10]);
+}
+
+
+time_t converterParaTimeT(string diaParaSerConvertido) {
+    tm data = {};
+    data.tm_mday = stoi(diaParaSerConvertido.substr(0, 2));
+    data.tm_mon = stoi(diaParaSerConvertido.substr(3, 2)) - 1;
+    data.tm_year = stoi(diaParaSerConvertido.substr(6, 4)) - 1900;
+    return mktime(&data);
+}
+
+void verificarEntreDatas(struct consulta consulta[],
+    struct consulta consultaVerificada[],
+    int &contConsultaS,
+    time_t dataInicial,
+    time_t dataFinal,
+    int &contConsultaDataVerificadas,
+    struct animal a[], int &contAnimalS,
+    struct veterinario v[], int &contVeterinarioS,
+    struct raca r[], int &contRacaS,
+    struct cidade c[], int &contCidadeS,
+    struct tutor t[], int &contTutoreS) {
+    float soma = 0;
+    for (int i = 0; i < contConsultaS; i++) {
+        if (consulta[i].dataConsulta>=dataInicial && consulta[i].dataConsulta<=dataFinal) {
+            consultaVerificada[contConsultaDataVerificadas] = consulta[i];
+            soma += consulta[i].valorConsulta;
+            contConsultaDataVerificadas++;
+        }
+    }
+    if (contConsultaDataVerificadas!=0) {
+        impressaoConsultas(consultaVerificada, contConsultaDataVerificadas, a, contAnimalS, v, contVeterinarioS, r, contRacaS, c, contCidadeS, t, contTutoreS);
+        cout <<"\n====================================================================================="<< endl;
+        cout<< "\n Valor total das consultas: "<< soma <<endl;
+        contConsultaDataVerificadas = 0;
+    } else {
+        cout << "\nNão há registros de consulta entre estas datas.";
+    }
+}
+
+void verificarEntreDatasEVeterinario(struct consulta consulta[],
+    struct consulta consultaVerificada[],
+    int &contConsultaS,
+    time_t dataInicial,
+    time_t dataFinal,
+    int &contConsultaDataVerificadas,
+    int codigoVet,
+    struct animal a[], int &contAnimalS,
+    struct veterinario v[], int &contVeterinarioS,
+    struct raca r[], int &contRacaS,
+    struct cidade c[], int &contCidadeS,
+    struct tutor t[], int &contTutoreS) {
+    float soma = 0;
+    contConsultaDataVerificadas = 0;
+    for (int i = 0; i < contConsultaS; i++) {
+        if (consulta[i].dataConsulta>=dataInicial && consulta[i].dataConsulta<=dataFinal && codigoVet == consulta[i].codigoVeterinario) {
+            consultaVerificada[contConsultaDataVerificadas] = consulta[i];
+            soma += consulta[i].valorConsulta;
+            contConsultaDataVerificadas++;
+        }
+    }
+    if (contConsultaDataVerificadas!=0) {
+        impressaoConsultas(consultaVerificada, contConsultaDataVerificadas, a, contAnimalS, v, contVeterinarioS, r, contRacaS, c, contCidadeS, t, contTutoreS);
+        cout <<"\n====================================================================================="<< endl;
+        cout<< "\n Valor total das consultas: "<< soma <<endl;
+    } else {
+        cout << "\nNão há registros de consulta entre estas datas.";
+    }
+}
+
+bool diaValido(int dd, int mm, int yy) {
+    bool validado = true;
+    if (!(dd >= 1 && dd <= 31) && (mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12)) {
+        validado = false;
+        return validado;
+    }
+    if (!(dd >= 1 && dd <= 30) && (mm == 4 || mm == 6 || mm == 9 || mm == 11)) {
+        validado = false;
+        return validado;
+    }
+    if (!(dd >= 1 && dd <= 28) && (mm == 2)) {
+        validado = false;
+        return validado;
+    }
+    if (dd == 29 && mm == 2 && (yy % 400 == 0 || (yy % 4 == 0 && yy % 100 != 0))) {
+        validado = false;
+        return validado;
+    }
+    return validado;
+}
+
+void verificarData(string &dia) {
+    while (!regex_match(dia, regex(R"(\d{2}/\d{2}/\d{4})"))) {
+            cout<<"\nFormato de data está inválido, digite novamente: "<< endl;
+            cin>>dia;
+            cin.ignore();
+    }
+    int dd = stoi(dia.substr(0, 2));
+    int mm = stoi(dia.substr(3, 2));
+    int yy= stoi(dia.substr(6, 4));
+    while (!diaValido(dd,mm,yy)) {
+        cout<<"\nData é inválida, cadastre novamente a data: "<<endl;
+        cin>>dia;
+        cin.ignore();
+    }
+}
+
+void buscarConsultaEntreDatas(struct consulta consulta[],
+                               struct consulta consultaA[],
+                               int &contConsultaS,
+                               int &contConsultaDataVerificadas,
+                               struct animal a[], int &contAnimalS,
+                               struct veterinario v[], int &contVeterinarioS,
+                               struct raca r[], int &contRacaS,
+                               struct cidade c[], int &contCidadeS,
+                               struct tutor t[], int &contTutoreS) {
+    string diaI,diaF;
+
+    cout << "\n Digite a data incial para listar consultas: "<< endl;
+    cin>>diaI;
+    verificarData(diaI);
+    cout << "\n Digite a data final para listar consultas: "<< endl;
+    cin>>diaF;
+    verificarData(diaF);
+
+    time_t dataInicial = converterParaTimeT(diaI);
+    time_t dataFinal = converterParaTimeT(diaF);
+    verificarEntreDatas(consulta, consultaA, contConsultaS,
+                        dataInicial, dataFinal, contConsultaDataVerificadas,
+                        a, contAnimalS, v, contVeterinarioS, r, contRacaS, c, contCidadeS, t, contTutoreS);
+}
+
+void buscarConsultaEntreDatasEVeterinario(struct consulta consulta[],
+                                          struct consulta consultaA[],
+                                          int &contConsultaS,
+                                          int &contConsultaDataVerificadas,
+                                          struct animal a[], int &contAnimalS,
+                                          struct veterinario v[], int &contVeterinarioS,
+                                          struct raca r[], int &contRacaS,
+                                          struct cidade c[], int &contCidadeS,
+                                          struct tutor t[], int &contTutoreS) {
+    string diaI,diaF;
+
+    cout << "\n Digite a data incial para listar consultas: "<< endl;
+    cin>>diaI;
+    verificarData(diaI);
+    cout << "\n Digite a data final para listar consultas: "<< endl;
+    cin>>diaF;
+    verificarData(diaF);
+
+    time_t dataInicial = converterParaTimeT(diaI);
+    time_t dataFinal = converterParaTimeT(diaF);
+    int codVet;
+    cout<<"\nDigite o codigo do veterinario que deseja buscar: ";
+    cin>>codVet;
+    verificarEntreDatasEVeterinario(consulta, consultaA, contConsultaS,
+                                        dataInicial, dataFinal, contConsultaDataVerificadas, codVet,
+                                        a, contAnimalS, v, contVeterinarioS, r, contRacaS, c, contCidadeS, t, contTutoreS);
 }
