@@ -1,6 +1,6 @@
 # 🐾 Clínica Veterinária - Arquivos Sequenciais (C++)
 
-Este projeto foi desenvolvido como parte da disciplina de **Algoritmos e Estruturas de Dados II**, com o objetivo de simular uma aplicação de controle de uma Clínica Veterinária utilizando **estruturas que representam arquivos sequenciais**.
+Este projeto foi desenvolvido como parte da disciplina de **Algoritmos e Estruturas de Dados II** do curso de Análise e Desenvolvimento de Sistemas - FEMA, com o objetivo de simular uma aplicação de controle de uma Clínica Veterinária utilizando **estruturas que representam arquivos sequenciais**.
 
 
 
@@ -8,7 +8,7 @@ Este projeto foi desenvolvido como parte da disciplina de **Algoritmos e Estrutu
 
 ## 📘 Descrição do Projeto
 
-O programa implementa a estrutura de dados e funcionalidades necessárias para gerenciar uma clínica veterinária, utilizando **arrays simulando arquivos sequenciais**, com suporte para:
+O programa implementa estruturas de dados e funcionalidades necessárias para gerenciar uma clínica veterinária, utilizando **arrays simulando arquivos sequenciais**, com suporte para:
 
 - Cidades
 - Raças
@@ -47,19 +47,24 @@ As informações são manipuladas por meio de menus e armazenadas em tempo de ex
 - Busca e exibição da raça.
 - Busca e exibição do nome do tutor e da cidade correspondente.
 
-### 4. Inclusão de Consultas
+### 4. Consultas
 - Código gerado automaticamente de forma sequencial.
 - Exibição completa de dados do animal, tutor, raça, veterinário e cidade.
 - Entrada da data da consulta (com validação) e valor.
 
 ### 5. Consultas por Intervalo de Datas
+
 - Exibe todas as consultas realizadas dentro de um intervalo.
 - Exibe: nome do animal, nome do veterinário, data e valor da consulta.
 - Soma e exibe o valor total das consultas no período.
+- Validação completa da data, incluindo **formato** e **verificação de ano bissexto**.
 
 ### 6. Consultas por Intervalo de Datas e Veterinário
+
 - Filtra as consultas por veterinário e período.
 - Exibe os mesmos dados da funcionalidade anterior.
+- Soma e exibe o valor total das consultas no período.
+- Validação completa da data, incluindo **formato** e **verificação de ano bissexto**.
 
 ---
 
@@ -81,8 +86,6 @@ O código **não utiliza variáveis globais**.
 
 ## 👩‍💻 Desenvolvido por
 
-**Clara Joaquim Plantier Marques**  
-**Yann Pereira Garcia**  
-Estudantes de Análise e Desenvolvimento de Sistemas – FEMA  
-Maio 2025
-
+👥 GitHub:
+- [Clara Joaquim](https://github.com/ClaraJoaquim)
+- [Yann Garcia](https://github.com/YannPG)
