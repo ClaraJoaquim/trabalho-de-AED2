@@ -2,8 +2,6 @@
 
 Este projeto foi desenvolvido como parte da disciplina de **Algoritmos e Estruturas de Dados II** do curso de Análise e Desenvolvimento de Sistemas - FEMA, com o objetivo de simular uma aplicação de controle de uma Clínica Veterinária utilizando **estruturas que representam arquivos sequenciais**.
 
-
-
 ---
 
 ## 📘 Descrição do Projeto
@@ -78,8 +76,9 @@ O código **não utiliza variáveis globais**.
 ## 📎 Observações
 
 - Toda a lógica foi implementada utilizando **arrays como arquivos sequenciais**.
+- Validção de CPF.
 - A manipulação de datas foi feita utilizando `time_t` e `strftime()` com entrada no formato `dd/MM/yyyy`.
-- CPF validado de forma estrutural.
+- Validação completa da data, incluindo **formato** e **verificação de ano bissexto**.
 - Menus simples e intuitivos com tratamento de erros.
 
 ---
