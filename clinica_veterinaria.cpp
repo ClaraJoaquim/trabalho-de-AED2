@@ -1,3 +1,10 @@
+/* Projeto: Controle de Clínica Veterinária
+    Desenvolvido por:
+    . Clara Joaquim Plantier Marques
+    . Yann Pereira Garcia
+    FEMA - Maio de 2025
+*/
+
 #include <iostream>
 #include <clocale>
 #include <conio.h>
