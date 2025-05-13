@@ -256,6 +256,31 @@ int main() {
     int contVeterinarioS = 0;
     int contConsultaS = 0, contConsultaDataVerificadas = 0;
 
+
+    // Tutores
+    tutores[0] = {1, "João Silva", "12345678909", "Rua A", 1};
+    tutores[1] = {2, "Maria Oliveira", "98765432100", "Rua B", 2};
+    contTutorS = 2;
+
+    // Animais
+    animais[0] = {1, "Rex", 1, 3, 20.5, 1};
+    animais[1] = {2, "Mimi", 2, 2, 4.2, 2};
+    contAnimalS = 2;
+
+    // Veterinários
+    veterinarios[0] = {1, "Dr. Carlos", "Av. Vet", 1};
+    veterinarios[1] = {2, "Dra. Ana", "Rua Vet", 2};
+    contVeterinarioS = 2;
+
+    // Consultas
+    consultas[0] = {1, 1, 1, converterParaTimeT("01/01/2022"), 150.00f};
+    consultas[1] = {2, 2, 2, converterParaTimeT("05/01/2023"), 200.00f};
+    consultas[2] = {2, 2, 2, converterParaTimeT("05/01/2024"), 200.00f};
+    consultas[3] = {2, 2, 2, converterParaTimeT("05/01/2024"), 200.00f};
+    consultas[4] = {2, 2, 2, converterParaTimeT("05/01/2025"), 200.00f};
+    consultas[5] = {2, 2, 2, converterParaTimeT("05/01/2026"), 200.00f};
+    contConsultaS = 6;
+
     //Menu
 
     char opcao = 'N';
@@ -1260,6 +1285,7 @@ void inclusaoTutor (struct tutor S[], int &contS, struct tutor T[], int contT, s
     }
     contA = k;
     contS = k;
+
     for (int a = 0; a < k; a++) {
         S[a].codigo = A[a].codigo;
         cout << S[a].codigo;
@@ -1319,6 +1345,7 @@ void inclusaoAnimal (struct animal S[], int &contS, struct animal T[], int contT
     }
     contA = k;
     contS = k;
+
     for (int a = 0; a < k; a++) {
         S[a].codigo = A[a].codigo;
         S[a].nome = A[a].nome;
@@ -1437,11 +1464,12 @@ void verificarEntreDatas(struct consulta consulta[],
     }
     if (contConsultaDataVerificadas!=0) {
         impressaoConsultas(consultaVerificada, contConsultaDataVerificadas, a, contAnimalS, v, contVeterinarioS, r, contRacaS, c, contCidadeS, t, contTutoreS);
+        cout<< "\n\tValor total das consultas: " << soma << endl;
         cout <<"\n====================================================================================="<< endl;
-        cout<< "\n Valor total das consultas: "<< soma <<endl;
         contConsultaDataVerificadas = 0;
     } else {
-        cout << "\nNão há registros de consulta entre estas datas.";
+        cout << "\n\tNão há registros de consulta entre estas datas.";
+        cout <<"\n====================================================================================="<< endl;
     }
 }
 
@@ -1468,47 +1496,45 @@ void verificarEntreDatasEVeterinario(struct consulta consulta[],
     }
     if (contConsultaDataVerificadas!=0) {
         impressaoConsultas(consultaVerificada, contConsultaDataVerificadas, a, contAnimalS, v, contVeterinarioS, r, contRacaS, c, contCidadeS, t, contTutoreS);
+        cout<< "\n\tValor total das consultas: "<< soma <<endl;
         cout <<"\n====================================================================================="<< endl;
-        cout<< "\n Valor total das consultas: "<< soma <<endl;
     } else {
-        cout << "\nNão há registros de consulta entre estas datas.";
+        cout << "\n\tNão há registros de consulta entre estas datas.";
+        cout <<"\n====================================================================================="<< endl;
     }
 }
 
 bool diaValido(int dd, int mm, int yy) {
-    bool validado = true;
-    if (!(dd >= 1 && dd <= 31) && (mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12)) {
-        validado = false;
-        return validado;
-    }
-    if (!(dd >= 1 && dd <= 30) && (mm == 4 || mm == 6 || mm == 9 || mm == 11)) {
-        validado = false;
-        return validado;
-    }
-    if (!(dd >= 1 && dd <= 28) && (mm == 2)) {
-        validado = false;
-        return validado;
-    }
-    if (dd == 29 && mm == 2 && (yy % 400 == 0 || (yy % 4 == 0 && yy % 100 != 0))) {
-        validado = false;
-        return validado;
-    }
-    return validado;
+    if (mm < 1 || mm > 12) return false;
+    if (dd < 1) return false;
+
+    int diasNoMes[] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+    if (mm == 2 && (yy % 400 == 0 || (yy % 4 == 0 && yy % 100 != 0))) diasNoMes[1] = 29;
+
+    if (dd > diasNoMes[mm - 1]) return false;
+
+    return true;
 }
 
+
 void verificarData(string &dia) {
-    while (!regex_match(dia, regex(R"(\d{2}/\d{2}/\d{4})"))) {
-            cout<<"\nFormato de data está inválido, digite novamente: "<< endl;
+    bool dataValida = false;
+    while(dataValida!=true) {
+        if (!regex_match(dia, regex(R"(\d{2}/\d{2}/\d{4})"))) {
+            cout<<"\n\tData está inválido, digite novamente: ";
             cin>>dia;
             cin.ignore();
-    }
-    int dd = stoi(dia.substr(0, 2));
-    int mm = stoi(dia.substr(3, 2));
-    int yy= stoi(dia.substr(6, 4));
-    while (!diaValido(dd,mm,yy)) {
-        cout<<"\nData é inválida, cadastre novamente a data: "<<endl;
-        cin>>dia;
-        cin.ignore();
+        } else {
+            int dd = stoi(dia.substr(0, 2));
+            int mm = stoi(dia.substr(3, 2));
+            int yy= stoi(dia.substr(6, 4));
+            if (!diaValido(dd,mm,yy)) {
+                cout<<"\n\tData está inválido, digite novamente: ";
+                cin>>dia;
+                cin.ignore();
+            }
+            dataValida = true;
+        }
     }
 }
 
@@ -1522,16 +1548,18 @@ void buscarConsultaEntreDatas(struct consulta consulta[],
                                struct cidade c[], int &contCidadeS,
                                struct tutor t[], int &contTutoreS) {
     string diaI,diaF;
-
-    cout << "\n Digite a data incial para listar consultas: "<< endl;
-    cin>>diaI;
-    verificarData(diaI);
-    cout << "\n Digite a data final para listar consultas: "<< endl;
-    cin>>diaF;
-    verificarData(diaF);
-
-    time_t dataInicial = converterParaTimeT(diaI);
-    time_t dataFinal = converterParaTimeT(diaF);
+    time_t dataInicial,dataFinal;
+    do{
+        cout << "\n\tDigite a data incial para listar consultas: ";
+        cin>>diaI;
+        verificarData(diaI);
+        cout << "\n\tDigite a data final para listar consultas: ";
+        cin>>diaF;
+        verificarData(diaF);
+        dataInicial = converterParaTimeT(diaI);
+        dataFinal = converterParaTimeT(diaF);
+        if (dataInicial>dataFinal) cout << "\n\tData final menor que a inicial, digite novamente: ";
+    } while (dataInicial>dataFinal);
     verificarEntreDatas(consulta, consultaA, contConsultaS,
                         dataInicial, dataFinal, contConsultaDataVerificadas,
                         a, contAnimalS, v, contVeterinarioS, r, contRacaS, c, contCidadeS, t, contTutoreS);
@@ -1547,18 +1575,20 @@ void buscarConsultaEntreDatasEVeterinario(struct consulta consulta[],
                                           struct cidade c[], int &contCidadeS,
                                           struct tutor t[], int &contTutoreS) {
     string diaI,diaF;
-
-    cout << "\n Digite a data incial para listar consultas: "<< endl;
-    cin>>diaI;
-    verificarData(diaI);
-    cout << "\n Digite a data final para listar consultas: "<< endl;
-    cin>>diaF;
-    verificarData(diaF);
-
-    time_t dataInicial = converterParaTimeT(diaI);
-    time_t dataFinal = converterParaTimeT(diaF);
+    time_t dataInicial,dataFinal;
+    do{
+        cout << "\n\tDigite a data incial para listar consultas: ";
+        cin>>diaI;
+        verificarData(diaI);
+        cout << "\n\tDigite a data final para listar consultas: ";
+        cin>>diaF;
+        verificarData(diaF);
+        dataInicial = converterParaTimeT(diaI);
+        dataFinal = converterParaTimeT(diaF);
+        if (dataInicial>dataFinal) cout << "\n\tData final menor que a inicial, digite novamente: ";
+    } while (dataInicial>dataFinal);
     int codVet;
-    cout<<"\nDigite o codigo do veterinario que deseja buscar: ";
+    cout<<"\n\tDigite o codigo do veterinario que deseja buscar: ";
     cin>>codVet;
     verificarEntreDatasEVeterinario(consulta, consultaA, contConsultaS,
                                         dataInicial, dataFinal, contConsultaDataVerificadas, codVet,
