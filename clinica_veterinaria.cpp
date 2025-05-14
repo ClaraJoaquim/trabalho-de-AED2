@@ -61,12 +61,12 @@ struct consulta {
     float valorConsulta;
 };
 
-// Função para exibir o texto inicial
 
+// Função para exibir o texto inicial
 void textoInicial();
 
-// Funções para leitura das tabelas
 
+// Funções para leitura das tabelas
 void leituraCidades(struct cidade cidades[], int &contCidadeS);
 
 void leituraRacas(struct raca r[], int &contRacaS);
@@ -89,30 +89,32 @@ void leituraConsultas(struct consulta cons[], int &contConsultaS,
                       struct cidade c[], int &contCidadeS,
                       struct tutor t[], int &contTutoreS);
 
-// Funções para impressão das tabelas
 
+// Funções para impressão das tabelas
 void impressaoCidades(struct cidade c[], int contCidadeS);
 
 void impressaoRacas(struct raca r[], int contRacaS);
 
 void impressaoAnimais(struct animal a[], int &contAnimalS,
-                    struct raca r[], int &contRacaS,
-                    struct tutor t[], int &contTutorS,
-                    struct cidade c[], int &contCidadeS);
+                      struct raca r[], int &contRacaS,
+                      struct tutor t[], int &contTutorS,
+                      struct cidade c[], int &contCidadeS);
 
-void impressaoTutores(struct tutor t[], int contTutorS, struct cidade c[], int contCidadeS);
+void impressaoTutores(struct tutor t[], int contTutorS,
+                      struct cidade c[], int contCidadeS);
 
-void impressaoVeterinarios(struct veterinario v[], int contVeterinarioS, struct cidade c[], int contCidadeS);
+void impressaoVeterinarios(struct veterinario v[], int contVeterinarioS,
+                           struct cidade c[], int contCidadeS);
 
 void impressaoConsultas(struct consulta cons[], int &contConsultaS,
-                      struct animal a[], int &contAnimalS,
-                      struct veterinario v[], int &contVeterinarioS,
-                      struct raca r[], int &contRacaS,
-                      struct cidade c[], int &contCidadeS,
-                      struct tutor t[], int &contTutoreS);
+                        struct animal a[], int &contAnimalS,
+                        struct veterinario v[], int &contVeterinarioS,
+                        struct raca r[], int &contRacaS,
+                        struct cidade c[], int &contCidadeS,
+                        struct tutor t[], int &contTutoreS);
+
 
 // Funções para verificar se o código (pk) já existe
-
 bool codigoCidadeExiste(struct cidade c[], int contCidadeS, int cod);
 
 bool codigoRacaExiste(struct raca r[], int contRacaS, int cod);
@@ -125,8 +127,8 @@ bool codigoVeterinarioExiste(struct veterinario v[], int contVeterinarioS, int c
 
 bool codigoConsultaExiste(struct consulta cons[], int contConsultaS, int cod);
 
-// Funções de Busca Binária
 
+// Funções de Busca Binária
 void buscaBinariaCidade(struct cidade c[], int contCidadeS, int cod);
 
 void buscaBinariaRaca(struct raca r[], int contRacaS, int cod);
@@ -137,7 +139,8 @@ void buscaBinariaAnimal(struct animal a[], int contAnimalS, int codAnimal, int &
 
 int buscaBinariaVeterinario(struct veterinario v[], int contVeterinarioS, int codVeterinario);
 
-// Funções para validar o cpf
+
+// Funções para validar e formatar cpf
 
 string limparCPF(const string& cpf);
 
@@ -147,24 +150,28 @@ bool validarCPF(const string& cpfEntrada);
 
 bool cpfExiste(struct tutor t[], int contTutorS, string cpf);
 
-// Função para validar Idade do Animal
 
-int validarIdadeAnimal();
+// Função para validar Idade
+int validarIdade();
 
-float validarPesoAnimal();
+// Função para validar Peso
+float validarPeso();
 
+// Função para validar e formatar valor da consulta
 float validarValorConsulta();
 
 string formatarValorConsulta(float valor);
 
-// Funções do menu
 
+// Funções do menu
 char menu();
 
-void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int &contRacaS,
-             struct animal animais[], int &contAnimalS, struct tutor tutores[], int &contTutorS,
-             struct veterinario veterinarios[], int &contVeterinarioS, struct consulta consultas[],
-             int &contConsultaS);
+void inserir(struct cidade cidades[], int &contCidadeS,
+             struct raca racas[], int &contRacaS,
+             struct animal animais[], int &contAnimalS,
+             struct tutor tutores[], int &contTutorS,
+             struct veterinario veterinarios[], int &contVeterinarioS,
+             struct consulta consultas[], int &contConsultaS);
 
 void imprimir(struct cidade cidades[], int &contCidadeS,
               struct raca racas[], int &contRacaS,
@@ -174,31 +181,37 @@ void imprimir(struct cidade cidades[], int &contCidadeS,
               struct consulta consultas[], int &contConsultaS,
               int &contConsultaDataVerificadas);
 
-void incluir(struct animal animais[], int &contAnimalS, struct animal animaisT[], int contAnimalT,
-             struct animal animaisA[], int &contAnimalA, struct tutor tutores[], int &contTutorS,
-             struct tutor tutoresT[], int contTutorT, struct tutor tutoresA[], int &contTutorA,
-             struct cidade cidades[], int &contCidadeS, struct raca racas[], int &contRacaS);
+void incluir(struct animal animais[], int &contAnimalS,
+             struct animal animaisT[], int contAnimalT,
+             struct animal animaisA[], int &contAnimalA,
+             struct tutor tutores[], int &contTutorS,
+             struct tutor tutoresT[], int contTutorT,
+             struct tutor tutoresA[], int &contTutorA,
+             struct cidade cidades[], int &contCidadeS,
+             struct raca racas[], int &contRacaS);
 
 char sair();
 
+
 // Funções de Inclusão
+void inclusaoTutor (struct tutor S[], int &contS,
+                    struct tutor T[], int contT,
+                    struct tutor A[], int &contA);
 
-void inclusaoTutor (struct tutor S[], int &contS, struct tutor T[], int contT, struct tutor A[], int &contA);
+void inclusaoAnimal (struct animal S[], int &contS,
+                     struct animal T[], int contT,
+                     struct animal A[], int &contA);
 
-void inclusaoAnimal (struct animal S[], int &contS, struct animal T[], int contT, struct animal A[], int &contA);
 
 // Validação de Data
-
 void verificarData(string &dia);
 
 bool diaValido(int dd, int mm, int yy);
 
 time_t converterParaTimeT(string diaParaSerConvertido);
 
-// Impressão
-void imprimirBuscaPorConsultasEntreDatas(struct consulta consultaVerificada[], int &contConsultaDataVerificadas);
 
-// Verificação entre datas (com e sem filtro por veterinário)
+// Verificação entre datas
 void verificarEntreDatas(struct consulta consulta[],
                          struct consulta consultaVerificada[],
                          int &contConsultaS,
@@ -224,7 +237,8 @@ void verificarEntreDatasEVeterinario(struct consulta consulta[],
                                      struct cidade c[], int &contCidadeS,
                                      struct tutor t[], int &contTutoreS);
 
-// Busca de consultas entre datas
+
+// Funções para busca de datas
 void buscarConsultaEntreDatas(struct consulta consulta[],
                                struct consulta consultaA[],
                                int &contConsultaS,
@@ -282,13 +296,23 @@ int main() {
         opcao = menu();
         switch (opcao) {
             case '1': {
-                inserir(cidades, contCidadeS, racas, contRacaS, animais, contAnimalS, tutores, contTutorS,
-                        veterinarios, contVeterinarioS, consultas, contConsultaS);
+                inserir(cidades, contCidadeS,
+                        racas, contRacaS,
+                        animais, contAnimalS,
+                        tutores, contTutorS,
+                        veterinarios, contVeterinarioS,
+                        consultas, contConsultaS);
                 break;
             }
             case '2': {
-                incluir(animais, contAnimalS, animaisT, contAnimalT, animaisA, contAnimalA, tutores, contTutorS,
-    tutoresT, contTutorT, tutoresA, contTutorA, cidades, contCidadeS, racas, contRacaS);
+                incluir(animais, contAnimalS,
+                        animaisT, contAnimalT,
+                        animaisA, contAnimalA,
+                        tutores, contTutorS,
+                        tutoresT, contTutorT,
+                        tutoresA, contTutorA,
+                        cidades, contCidadeS,
+                        racas, contRacaS);
                 break;
             }
             case '3' : {
@@ -306,7 +330,7 @@ int main() {
                 break;
             }
             default: {
-                cout << "\n\nOpcao invalida. Tecle algo para continuar...";
+                cout << "\n\nOpção invalida. Tecle algo para continuar...";
                 getch();
             }
         }
@@ -328,10 +352,12 @@ char menu() {
     return opcao;
 }
 
-void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int &contRacaS,
-             struct animal animais[], int &contAnimalS, struct tutor tutores[], int &contTutorS,
-             struct veterinario veterinarios[], int &contVeterinarioS, struct consulta consultas[],
-             int &contConsultaS) {
+void inserir(struct cidade cidades[], int &contCidadeS,
+             struct raca racas[], int &contRacaS,
+             struct animal animais[], int &contAnimalS,
+             struct tutor tutores[], int &contTutorS,
+             struct veterinario veterinarios[], int &contVeterinarioS,
+             struct consulta consultas[], int &contConsultaS) {
     char conf;
 
     char opcao;
@@ -380,39 +406,57 @@ void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int
                 }
                 case '3': {
                     if (contTutorS == 0) {
-                        leituraTutores(tutores, contTutorS, cidades, contCidadeS);
+                        leituraTutores(tutores, contTutorS,
+                                       cidades, contCidadeS);
                     } else {
                         cout << "\n\tA tabela de tutores já foi preenchida!\n";
-                        impressaoTutores(tutores, contTutorS, cidades, contCidadeS);
+                        impressaoTutores(tutores, contTutorS,
+                                         cidades, contCidadeS);
                     }
                     break;
                 }
                 case '4': {
                     if (contAnimalS == 0) {
-                        leituraAnimais(animais, contAnimalS, racas, contRacaS, tutores, contTutorS, cidades,
-                                       contCidadeS);
+                        leituraAnimais(animais, contAnimalS,
+                                       racas, contRacaS,
+                                       tutores, contTutorS,
+                                       cidades, contCidadeS);
                     } else {
                         cout << "\n\tA tabela de animais já foi preenchida!\n";
-                        impressaoAnimais(animais, contAnimalS, racas, contRacaS, tutores, contTutorS, cidades, contCidadeS);
+                        impressaoAnimais(animais, contAnimalS,
+                                         racas, contRacaS,
+                                         tutores, contTutorS,
+                                         cidades, contCidadeS);
                     }
                     break;
                 }
                 case '5': {
                     if (contVeterinarioS == 0) {
-                        leituraVeterinarios(veterinarios, contVeterinarioS, cidades, contCidadeS);
+                        leituraVeterinarios(veterinarios, contVeterinarioS,
+                                            cidades, contCidadeS);
                     } else {
                         cout << "\n\tA tabela de veterinários já foi preenchida!\n";
-                        impressaoVeterinarios(veterinarios, contVeterinarioS, cidades, contCidadeS);
+                        impressaoVeterinarios(veterinarios, contVeterinarioS,
+                                              cidades, contCidadeS);
                     }
                     break;
                 }
                 case '6': {
                     if (contConsultaS == 0) {
-                        leituraConsultas(consultas, contConsultaS, animais, contAnimalS, veterinarios, contVeterinarioS,
-                                         racas, contRacaS, cidades, contCidadeS, tutores, contTutorS);
+                        leituraConsultas(consultas, contConsultaS,
+                                         animais, contAnimalS,
+                                         veterinarios, contVeterinarioS,
+                                         racas, contRacaS,
+                                         cidades, contCidadeS,
+                                         tutores, contTutorS);
                     } else {
                         cout << "\n\tA tabela de consultas já foi preenchida!\n";
-                        impressaoConsultas(consultas, contConsultaS, animais, contAnimalS, veterinarios, contVeterinarioS, racas, contRacaS, cidades, contCidadeS, tutores, contTutorS);
+                        impressaoConsultas(consultas, contConsultaS,
+                                           animais, contAnimalS,
+                                           veterinarios, contVeterinarioS,
+                                           racas, contRacaS,
+                                           cidades, contCidadeS,
+                                           tutores, contTutorS);
                     }
                     break;
                 }
@@ -421,7 +465,7 @@ void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int
                     break;
                 }
                 default: {
-                    cout << "\n\nOpcao invalida. Tecle algo para continuar...";
+                    cout << "\n\nOpção invalida. Tecle algo para continuar...";
                     getch();
                 }
             }
@@ -432,10 +476,14 @@ void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int
     }
 }
 
-void incluir(struct animal animais[], int &contAnimalS, struct animal animaisT[], int contAnimalT,
-             struct animal animaisA[], int &contAnimalA, struct tutor tutores[], int &contTutorS,
-             struct tutor tutoresT[], int contTutorT, struct tutor tutoresA[], int &contTutorA,
-             struct cidade cidades[], int &contCidadeS, struct raca racas[], int &contRacaS) {
+void incluir(struct animal animais[], int &contAnimalS,
+             struct animal animaisT[], int contAnimalT,
+             struct animal animaisA[], int &contAnimalA,
+             struct tutor tutores[], int &contTutorS,
+             struct tutor tutoresT[], int contTutorT,
+             struct tutor tutoresA[], int &contTutorA,
+             struct cidade cidades[], int &contCidadeS,
+             struct raca racas[], int &contRacaS) {
     char conf;
 
     char opcao;
@@ -464,28 +512,55 @@ void incluir(struct animal animais[], int &contAnimalS, struct animal animaisT[]
                 case '1': {
                     if (contTutorS == 0) {
                         cout << "\n\tA tabela de tutores ainda não foi preenchida!\n\tVocê será direcionado para o cadastro da tabela de Tutores!\n";
-                        leituraTutores(tutores, contTutorS, cidades, contCidadeS);
+                        leituraTutores(tutores, contTutorS,
+                                       cidades, contCidadeS);
+
                         cout << "\n\tTabela de tutores foi preenchida!\n\tPor favor preencha a lista com as novas inclusões\n";
-                        leituraTutores(tutoresT, contTutorT, cidades, contCidadeS);
-                        inclusaoTutor(tutores, contTutorS, tutoresT, contTutorT, tutoresA, contTutorA);
+                        leituraTutores(tutoresT, contTutorT,
+                                       cidades, contCidadeS);
+
+                        inclusaoTutor(tutores, contTutorS,
+                                      tutoresT, contTutorT,
+                                      tutoresA, contTutorA);
                     } else {
                         cout << "\n\tPreencha a tabela com os novos registros de tutores\n";
-                        leituraTutores(tutoresT, contTutorT, cidades, contCidadeS);
-                        inclusaoTutor(tutores, contTutorS, tutoresT, contTutorT, tutoresA, contTutorA);
+                        leituraTutores(tutoresT, contTutorT,
+                                       cidades, contCidadeS);
+
+                        inclusaoTutor(tutores, contTutorS,
+                                      tutoresT, contTutorT,
+                                      tutoresA, contTutorA);
                     }
                     break;
                 }
                 case '2': {
                     if (contAnimalS == 0) {
                         cout << "\n\tA tabela de animais ainda não foi preenchida!\n\tVocê será direcionado para a leitura da tabela de Animais!\n";
-                        leituraAnimais(animais, contAnimalS, racas, contRacaS, tutores, contTutorS, cidades, contCidadeS);
+                        leituraAnimais(animais, contAnimalS,
+                                       racas, contRacaS,
+                                       tutores, contTutorS,
+                                       cidades, contCidadeS);
+
                         cout << "\n\tTabela de animais foi preenchida!\n\tPor favor preencha a lista com as novas inclusões\n";
-                        leituraAnimais(animaisT, contAnimalT, racas, contRacaS, tutores, contTutorS, cidades, contCidadeS);
-                        inclusaoAnimal(animais, contAnimalS, animaisT, contAnimalT, animaisA, contAnimalA);
+                        leituraAnimais(animaisT, contAnimalT,
+                                       racas, contRacaS,
+                                       tutores, contTutorS,
+                                       cidades, contCidadeS);
+
+                        inclusaoAnimal(animais, contAnimalS,
+                                       animaisT, contAnimalT,
+                                       animaisA, contAnimalA);
+
                     } else {
                         cout << "\n\tPreencha a tabela com os novos registros de animais\n";
-                        leituraAnimais(animaisT, contAnimalT, racas, contRacaS, tutores, contTutorS, cidades, contCidadeS);
-                        inclusaoAnimal(animais, contAnimalS, animaisT, contAnimalT, animaisA, contAnimalA);
+                        leituraAnimais(animaisT, contAnimalT,
+                                       racas, contRacaS,
+                                       tutores, contTutorS,
+                                       cidades, contCidadeS);
+
+                        inclusaoAnimal(animais, contAnimalS,
+                                       animaisT, contAnimalT,
+                                       animaisA, contAnimalA);
                     }
 
                     break;
@@ -495,7 +570,7 @@ void incluir(struct animal animais[], int &contAnimalS, struct animal animaisT[]
                     break;
                 }
                 default: {
-                    cout << "\n\nOpcao invalida. Tecle algo para continuar...";
+                    cout << "\n\nOpção invalida. Tecle algo para continuar...";
                     getch();
                 }
             }
@@ -549,8 +624,8 @@ void imprimir(struct cidade cidades[], int &contCidadeS,
                         impressaoCidades(cidades, contCidadeS);
                     } else {
                         cout <<"\n====================================================================================="<< endl;
-                        cout << "\n\tA leitura das cidades ainda não foi realizada!\n\tPor favor realize a leitura das cidades primeiro!\n";
-                        cout <<"\n====================================================================================="<< endl;
+                        cout << "\n\tA leitura das cidades ainda não foi realizada!\n\tVocê será redirecionado para a tela de leitura de cidades!\n";
+                        leituraCidades(cidades, contCidadeS);
                     }
                     break;
                 }
@@ -559,80 +634,112 @@ void imprimir(struct cidade cidades[], int &contCidadeS,
                         impressaoRacas(racas, contRacaS);
                     } else {
                         cout <<"\n====================================================================================="<< endl;
-                        cout << "\n\tA leitura das raças ainda não foi realizada!\n\tPor favor realize a leitura das raças primeiro!\n";
-                        cout <<"\n====================================================================================="<< endl;
+                        cout << "\n\tA leitura das raças ainda não foi realizada!\n\tVocê será redirecionado para a tela de leitura de raças!\n";
+                        leituraRacas(racas,contRacaS);
                     }
                     break;
                 }
                 case '3': {
                     if (contTutorS != 0) {
-                         impressaoTutores(tutoresS, contTutorS, cidades, contCidadeS);
+                         impressaoTutores(tutoresS, contTutorS,
+                                          cidades, contCidadeS);
                     } else {
                         cout <<"\n====================================================================================="<< endl;
-                        cout << "\n\tA leitura de tutores ainda não foi realizada!\n\tPor favor realize a leitura dos tutores primeiro!\n";
-                        cout <<"\n====================================================================================="<< endl;
+                        cout << "\n\tA leitura de tutores ainda não foi realizada!\n\tVocê será redirecionado para a tela de leitura de tutores!\n";
+                        leituraTutores(tutoresS, contTutorS,
+                                       cidades, contCidadeS);
                     }
                     break;
                 }
                 case '4': {
                     if (contAnimalS != 0) {
-                        impressaoAnimais(animalS, contAnimalS, racas, contRacaS, tutoresS, contTutorS, cidades, contCidadeS);
+                        impressaoAnimais(animalS, contAnimalS,
+                                         racas, contRacaS,
+                                         tutoresS, contTutorS,
+                                         cidades, contCidadeS);
                     } else {
                         cout <<"\n====================================================================================="<< endl;
-                        cout << "\n\tA leitura de animais ainda não foi realizada!\n\tPor favor realize a leitura dos animais primeiro!\n";
-                        cout <<"\n====================================================================================="<< endl;
+                        cout << "\n\tA leitura de animais ainda não foi realizada!\n\tVocê será redirecionado para a tela de leitura de animais!\n";
+                        leituraAnimais(animalS, contAnimalS,
+                                       racas, contRacaS,
+                                       tutoresS, contTutorS,
+                                       cidades, contCidadeS);
                     }
                     break;
                 }
                 case '5': {
                     if (contVeterinarioS != 0) {
-                        impressaoVeterinarios(veterinarios, contVeterinarioS, cidades, contCidadeS);
+                        impressaoVeterinarios(veterinarios, contVeterinarioS,
+                                              cidades, contCidadeS);
                     } else {
                         cout <<"\n====================================================================================="<< endl;
-                        cout << "\n\tA leitura de veterinários ainda não foi realizada!\n\tPor favor realize a leitura dos veterinarios primeiro!\n";
-                        cout <<"\n====================================================================================="<< endl;
+                        cout << "\n\tA leitura de veterinários ainda não foi realizada!\n\tVocê será redirecionado para a tela de leitura de veterinarios!\n";
+                        leituraVeterinarios(veterinarios, contVeterinarioS,
+                                            cidades, contCidadeS);
                     }
                     break;
                 }
                 case '6': {
                     if (contConsultaS != 0) {
-                        impressaoConsultas(consultas, contConsultaS, animalS, contAnimalS, veterinarios, contVeterinarioS, racas, contRacaS, cidades, contCidadeS, tutoresS, contTutorS);
+                        impressaoConsultas(consultas, contConsultaS,
+                                           animalS, contAnimalS,
+                                           veterinarios, contVeterinarioS,
+                                           racas, contRacaS,
+                                           cidades, contCidadeS,
+                                           tutoresS, contTutorS);
                     } else {
                         cout <<"\n====================================================================================="<< endl;
-                        cout << "\n\tA leitura de consultas ainda não foi realizada!\n\tPor favor realize a leitura das consultas primeiro\n";
-                        cout <<"\n====================================================================================="<< endl;
+                        cout << "\n\tA leitura de consultas ainda não foi realizada!\n\tVocê será redirecionado para a tela de leitura de consultas!\n";
+                        leituraConsultas(consultas, contConsultaS,
+                                         animalS, contAnimalS,
+                                         veterinarios, contVeterinarioS,
+                                         racas, contRacaS,
+                                         cidades, contCidadeS,
+                                         tutoresS, contTutorS);
                     }
                     break;
                 }
                 case '7': {
                     if (contConsultaS != 0) {
-                        buscarConsultaEntreDatas(consultas, consultas, contConsultaS, contConsultaDataVerificadas,
-                          animalS, contAnimalS,
-                          veterinarios, contVeterinarioS,
-                          racas, contRacaS,
-                          cidades, contCidadeS,
-                          tutoresS, contTutorS);
+                        buscarConsultaEntreDatas(consultas, consultas,
+                                                 contConsultaS, contConsultaDataVerificadas,
+                                                 animalS, contAnimalS,
+                                                 veterinarios, contVeterinarioS,
+                                                 racas, contRacaS,
+                                                 cidades, contCidadeS,
+                                                 tutoresS, contTutorS);
                     } else {
                         cout <<"\n====================================================================================="<< endl;
                         cout << "\n\tA leitura de consultas ainda não foi realizada!"<<endl;
                         cout << "\tVocê será redirecionado para a tela de leitura de consultas!"<<endl;
-                        leituraConsultas(consultas, contConsultaS, animalS, contAnimalS, veterinarios, contVeterinarioS, racas, contRacaS, cidades, contCidadeS, tutoresS, contTutorS);
+                        leituraConsultas(consultas, contConsultaS,
+                                         animalS, contAnimalS,
+                                         veterinarios, contVeterinarioS,
+                                         racas, contRacaS,
+                                         cidades, contCidadeS,
+                                         tutoresS, contTutorS);
                     }
                     break;
                 }
                 case '8': {
                     if (contConsultaS != 0) {
-                        buscarConsultaEntreDatasEVeterinario(consultas, consultas, contConsultaS, contConsultaDataVerificadas,
-                          animalS, contAnimalS,
-                          veterinarios, contVeterinarioS,
-                          racas, contRacaS,
-                          cidades, contCidadeS,
-                          tutoresS, contTutorS);
+                        buscarConsultaEntreDatasEVeterinario(consultas, consultas,
+                                                             contConsultaS, contConsultaDataVerificadas,
+                                                             animalS, contAnimalS,
+                                                             veterinarios, contVeterinarioS,
+                                                             racas, contRacaS,
+                                                             cidades, contCidadeS,
+                                                             tutoresS, contTutorS);
                     } else {
                         cout <<"\n====================================================================================="<< endl;
-                        cout << "\n\tA leitura de consultas ainda n?o foi realizada!"<<endl;
-                        cout << "\tVoc? ser? redirecionado para a tela de leitura de consultas!"<<endl;
-                        leituraConsultas(consultas, contConsultaS, animalS, contAnimalS, veterinarios, contVeterinarioS, racas, contRacaS, cidades, contCidadeS, tutoresS, contTutorS);
+                        cout << "\n\tA leitura de consultas ainda não foi realizada!"<<endl;
+                        cout << "\tVocê será redirecionado para a tela de leitura de consultas!"<<endl;
+                        leituraConsultas(consultas, contConsultaS,
+                                         animalS, contAnimalS,
+                                         veterinarios, contVeterinarioS,
+                                         racas, contRacaS,
+                                         cidades, contCidadeS,
+                                         tutoresS, contTutorS);
                     }
                     break;
                 }
@@ -645,7 +752,7 @@ void imprimir(struct cidade cidades[], int &contCidadeS,
                     loop = false;
                 }
                 default: {
-                    cout << "\n\nOpcao invalida. Tecle algo para continuar...";
+                    cout << "\n\nOpção invalida. Tecle algo para continuar...";
                     getch();
                 }
             }
@@ -667,7 +774,7 @@ char sair() {
     return sair;
 }
 
-//Exercicio 1 (Definir as leituras das tabelas)
+// Definir as leituras das tabelas
 
 void leituraCidades(struct cidade c[], int &contCidadeS) {
     int i = 0;
@@ -838,8 +945,8 @@ void leituraAnimais(struct animal a[], int &contAnimalS,
                 }
                 buscaBinariaRaca(r,contRacaS, codRaca);
                 a[i].codigoRaca = codRaca;
-                a[i].idade = validarIdadeAnimal();
-                a[i].peso = validarPesoAnimal();
+                a[i].idade = validarIdade();
+                a[i].peso = validarPeso();
                 int codTutor;
                 cout << "\tCódigo do Tutor: ";
                 cin >> codTutor;
@@ -1374,7 +1481,7 @@ void textoInicial() {
     }
 }
 
-// Funções para validar CPF
+// Funções para validar e formatar CPF
 
 string limparCPF(const string& cpf) {
     string apenasNumeros;
@@ -1426,9 +1533,10 @@ bool validarCPF(const string& cpfEntrada) {
     return (digito1 == digitos[9] && digito2 == digitos[10]);
 }
 
-// Funções para validar idade
 
-int validarIdadeAnimal() {
+// Função para validar idade
+
+int validarIdade() {
     int idade;
     bool condicao = true;
     while (condicao) {
@@ -1444,7 +1552,10 @@ int validarIdadeAnimal() {
     return idade;
 }
 
-float validarPesoAnimal() {
+
+// Função para validar peso
+
+float validarPeso() {
     float peso;
     bool condicao = true;
     while (condicao) {
@@ -1459,6 +1570,8 @@ float validarPesoAnimal() {
     }
     return peso;
 }
+
+// Funções para validar e formatar valor da consulta
 
 float validarValorConsulta() {
     float valor;
@@ -1487,6 +1600,7 @@ float validarValorConsulta() {
     }
     return valor;
 }
+
 
 string formatarValorConsulta(float valor) {
     stringstream ss;
@@ -1653,7 +1767,7 @@ void buscarConsultaEntreDatasEVeterinario(struct consulta consulta[],
         if (dataInicial>dataFinal) cout << "\n\tData final menor que a inicial, digite novamente: ";
     } while (dataInicial>dataFinal);
     int codVet;
-    cout<<"\n\tDigite o codigo do veterinario que deseja buscar: ";
+    cout<<"\n\tDigite o código do veterinario que deseja buscar: ";
     cin>>codVet;
     verificarEntreDatasEVeterinario(consulta, consultaA, contConsultaS,
                                         dataInicial, dataFinal, contConsultaDataVerificadas, codVet,
