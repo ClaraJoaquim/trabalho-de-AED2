@@ -39,16 +39,19 @@ As informações são manipuladas por meio de menus e armazenadas em tempo de ex
 
 ### 2. Inclusão de Novos Tutores
 - Validação automática do CPF.
+- Formatação de CPF;
 - Busca e exibição de nome e UF da cidade vinculada.
 
 ### 3. Inclusão de Novos Animais
 - Busca e exibição da raça.
 - Busca e exibição do nome do tutor e da cidade correspondente.
+- Validação de idade e peso;
 
 ### 4. Consultas
 - Código gerado automaticamente de forma sequencial.
 - Exibição completa de dados do animal, tutor, raça, veterinário e cidade.
 - Entrada da data da consulta (com validação) e valor.
+- Validação e formatação de Valores da Consulta;
 
 ### 5. Consultas por Intervalo de Datas
 
