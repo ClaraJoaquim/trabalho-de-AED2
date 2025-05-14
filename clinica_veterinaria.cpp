@@ -11,6 +11,7 @@
 #include <thread>
 #include <vector>
 #include <regex>
+#include <iomanip>
 #define Y 10
 
 using namespace std;
@@ -152,6 +153,10 @@ int validarIdadeAnimal();
 
 float validarPesoAnimal();
 
+float validarValorConsulta();
+
+string formatarValorConsulta(float valor);
+
 // Funções do menu
 
 char menu();
@@ -184,11 +189,11 @@ void inclusaoAnimal (struct animal S[], int &contS, struct animal T[], int contT
 
 // Validação de Data
 
-void verificarData(std::string &dia);
+void verificarData(string &dia);
 
 bool diaValido(int dd, int mm, int yy);
 
-time_t converterParaTimeT(std::string diaParaSerConvertido);
+time_t converterParaTimeT(string diaParaSerConvertido);
 
 // Impressão
 void imprimirBuscaPorConsultasEntreDatas(struct consulta consultaVerificada[], int &contConsultaDataVerificadas);
@@ -312,7 +317,6 @@ int main() {
 
 char menu() {
     char opcao;
-    // system("cls");
     cout << "\n\t\tOpções:\n\n";
     cout << "\t\t\t1 - Inserir dados\n\n";
     cout << "\t\t\t2 - Incluir Novos Dados\n\n";
@@ -334,7 +338,6 @@ void inserir(struct cidade cidades[], int &contCidadeS, struct raca racas[], int
     bool loop = true;
 
     while (loop) {
-        // system("cls");
         cout << "\n\tDeseja Realizar a Leitura de qual lista?\n\n";
         cout << "\n\t1 - Cidade" << endl;
         cout << "\n\t2 - Raça" << endl;
@@ -439,7 +442,6 @@ void incluir(struct animal animais[], int &contAnimalS, struct animal animaisT[]
     bool loop = true;
 
     while (loop) {
-        // system("cls");
         cout << "\n\tDeseja Realizar a Inclusão de qual lista?\n\n";
         cout << "\n\t1 - Tutor" << endl;
         cout << "\n\t2 - Animal" << endl;
@@ -517,7 +519,6 @@ void imprimir(struct cidade cidades[], int &contCidadeS,
     bool loop = true;
 
     while (loop) {
-        // system("cls");
         cout << "\n\tDeseja Realizar a Impressão de qual lista?\n\n";
         cout << "\n\t1 - Cidade" << endl;
         cout << "\n\t2 - Raça" << endl;
@@ -662,7 +663,6 @@ char sair() {
     if (sair == 'S' || sair == 's') {
         cout << "\n\nSaindo do programa...";
         getch();
-        // system("cls");
     }
     return sair;
 }
@@ -960,13 +960,12 @@ void leituraConsultas(struct consulta cons[], int &contConsultaS,
         buscaBinariaCidade(c, contCidadeS, codCidade);
         cons[i].codigoVeterinario = codVeterinario;
         string dia;
-        cout << "\n\tData da Consulta (FORMATO dd/MM/yyyy): "<<endl;
+        cout << "\n\tData da Consulta (FORMATO dd/MM/yyyy): ";
         cin >> dia;
         cin.ignore();
         verificarData(dia);
         cons[i].dataConsulta = converterParaTimeT(dia);
-        cout << "\tValor da Consulta: ";
-        cin >> cons[i].valorConsulta;
+        cons[i].valorConsulta = validarValorConsulta();
         cout << "\tDeseja adicionar mais consultas? (S/N)";
         cin >> conf;
         if (conf == 'N' || conf == 'n') {
@@ -984,6 +983,7 @@ void impressaoCidades(struct cidade c[], int contCidadeS) {
     cout <<"\n====================================================================================="<< endl;
     cout << "\n\tLista dos Registros da tabela Cidades" << endl;
     for (int i = 0; i < contCidadeS; i++) {
+        cout <<"\n---------------------------------------------------------------------------------"<< endl;
         cout << "\n\tInformações da " << (i + 1) << "º Cidade\n";
         cout << "\n\tCódigo: " << c[i].codigo << endl;
         cout << "\n\tCidade: " << c[i].nome << endl;
@@ -996,6 +996,7 @@ void impressaoRacas(struct raca r[], int contRacaS) {
     cout <<"\n====================================================================================="<< endl;
     cout << "\n\tLista dos Registros da tabela Raças" << endl;
     for (int i = 0; i < contRacaS; i++) {
+        cout <<"\n---------------------------------------------------------------------------------"<< endl;
         cout << "\n\tInformações da " << (i + 1) << "º Raça\n";
         cout << "\n\tCódigo: " << r[i].codigo << endl;
         cout << "\n\tDescrição: " << r[i].descricao << endl;
@@ -1007,10 +1008,11 @@ void impressaoTutores(struct tutor t[], int contTutorS, struct cidade c[], int c
     cout <<"\n====================================================================================="<< endl;
     cout << "\n\tLista dos Registros da tabela Tutores" << endl;
     for (int i = 0; i < contTutorS; i++) {
+        cout <<"\n---------------------------------------------------------------------------------"<< endl;
         cout << "\n\tInformações do " << (i + 1) << "º tutor\n\n";
         cout << "\n\tCódigo: " << t[i].codigo << endl;
         cout << "\n\tNome: " << t[i].nome << endl;
-        cout << "\n\tCPF: " << t[i].cpf << endl;
+        cout << "\n\tCPF: " << formatarCPF(t[i].cpf) << endl;
         cout << "\n\tEndereço: " << t[i].endereco << endl;
         cout << "\n\tCódigo da Cidade: " << t[i].codigoCidade << endl << endl;
         buscaBinariaCidade(c, contCidadeS, t[i].codigoCidade);
@@ -1025,6 +1027,7 @@ void impressaoAnimais(struct animal a[], int &contAnimalS,
     cout <<"\n====================================================================================="<< endl;
     cout << "\n\tLista dos Registros da tabela Animais" << endl;
     for (int i = 0; i < contAnimalS; i++) {
+        cout <<"\n---------------------------------------------------------------------------------"<< endl;
         cout << "\n\tInformações do " << (i + 1) << "º Animal\n";
         cout << "\n\tCódigo: " << a[i].codigo << endl;
         cout << "\n\tNome: " << a[i].nome << endl;
@@ -1044,6 +1047,7 @@ void impressaoVeterinarios(struct veterinario v[], int contVeterinarioS, struct 
     cout <<"\n====================================================================================="<< endl;
     cout << "\n\tLista dos Registros da tabela Veterinários" << endl;
     for (int i = 0; i < contVeterinarioS; i++) {
+        cout <<"\n---------------------------------------------------------------------------------"<< endl;
         cout << "\n\tInformações do " << (i + 1) << "º Veterinário\n";
         cout << "\n\tCódigo: " << v[i].codigo << endl;
         cout << "\n\tNome: " << v[i].nome << endl;
@@ -1066,6 +1070,7 @@ void impressaoConsultas(struct consulta cons[], int &contConsultaS,
         char dataFormatada[80];
         strftime(dataFormatada, sizeof(dataFormatada), "%d/%m/%Y", localtime(&cons[i].dataConsulta));
         int codRaca = 0, codTutor = 0;
+        cout <<"\n---------------------------------------------------------------------------------"<< endl;
         cout << "\n\tInformações da " << (i + 1) << "º Consulta\n";
         cout << "\n\tCódigo: " << cons[i].codigo << endl;
         cout << "\n\tCódigo do Animal: " << cons[i].codigoAnimal << endl;
@@ -1076,7 +1081,7 @@ void impressaoConsultas(struct consulta cons[], int &contConsultaS,
         int codCidade = buscaBinariaVeterinario(v, contVeterinarioS, cons[i].codigoVeterinario);
         buscaBinariaCidade(c, contCidadeS, codCidade);
         cout << "\n\tData da Consulta: " << dataFormatada << endl;
-        cout << "\n\tValor da Consulta: " << cons[i].valorConsulta << endl;
+        cout << "\n\tValor da Consulta: " << formatarValorConsulta(cons[i].valorConsulta) << endl;
     }
     cout <<"\n====================================================================================="<< endl;
 }
@@ -1346,7 +1351,7 @@ void inclusaoAnimal (struct animal S[], int &contS, struct animal T[], int contT
 // Função de Mostar texto inicial no menu
 
 void textoInicial() {
-    std::vector<char> textoBemVindo = {
+    vector<char> textoBemVindo = {
         '=', '=', '=', '=', '[',
         'B', 'e', 'm', ' ', 'V', 'i', 'n', 'd', 'o', ' ', 'à', ' ',
         'C', 'l', 'í', 'n', 'i', 'c', 'a', ' ',
@@ -1357,11 +1362,11 @@ void textoInicial() {
     for (int i = 0; i < textoBemVindo.size(); i++) {
         for (int j = 0; j <= i; j++) {
             if(j == 0) {
-                std::cout << "\t\t\t\t" << textoBemVindo[j];
+                cout << "\t\t\t\t" << textoBemVindo[j];
             } else {
-                std::cout << textoBemVindo[j];
+                cout << textoBemVindo[j];
             }
-            std::this_thread::sleep_for(std::chrono::nanoseconds(100000));
+            this_thread::sleep_for(chrono::nanoseconds(100000));
         }
         if (i < textoBemVindo.size() - 1) {
             system("cls");
@@ -1443,7 +1448,7 @@ float validarPesoAnimal() {
     float peso;
     bool condicao = true;
     while (condicao) {
-        cout << "\tPeso: ";
+        cout << "\tPeso (Em Kg): ";
         cin >> peso;
 
         if (peso <= 0) {
@@ -1453,6 +1458,44 @@ float validarPesoAnimal() {
         }
     }
     return peso;
+}
+
+float validarValorConsulta() {
+    float valor;
+    string entrada;
+    bool condicao = true;
+
+    while (condicao) {
+        cout << "\tValor da Consulta (Em R1"
+                "eais, utilize o .): R$ ";
+        cin >> entrada;
+
+        for (char& c : entrada) {
+            if (c == ',') {
+                c = '.';
+            }
+        }
+
+        stringstream ss(entrada);
+        ss >> valor;
+
+        if (valor <= 0) {
+            cout << "\n\tO valor " << valor << " é inválido!\n\tPor favor digite uma valor válido (maior que 0).\n";
+        } else {
+            condicao = false;
+        }
+    }
+    return valor;
+}
+
+string formatarValorConsulta(float valor) {
+    stringstream ss;
+    ss << fixed << setprecision(2) << valor;
+    string valorFormatado = ss.str();
+
+    replace(valorFormatado.begin(), valorFormatado.end(), '.', ',');
+
+    return "R$ " + valorFormatado;
 }
 
 // Funções para busca de datas
