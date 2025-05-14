@@ -146,6 +146,12 @@ bool validarCPF(const string& cpfEntrada);
 
 bool cpfExiste(struct tutor t[], int contTutorS, string cpf);
 
+// Função para validar Idade do Animal
+
+int validarIdadeAnimal();
+
+float validarPesoAnimal();
+
 // Funções do menu
 
 char menu();
@@ -178,9 +184,10 @@ void inclusaoAnimal (struct animal S[], int &contS, struct animal T[], int contT
 
 // Validação de Data
 
-// Validação de Data
 void verificarData(std::string &dia);
+
 bool diaValido(int dd, int mm, int yy);
+
 time_t converterParaTimeT(std::string diaParaSerConvertido);
 
 // Impressão
@@ -262,31 +269,6 @@ int main() {
     int contTutorS = 0, contTutorT, contTutorA;
     int contVeterinarioS = 0;
     int contConsultaS = 0, contConsultaDataVerificadas = 0;
-
-
-    // Tutores
-    tutores[0] = {1, "João Silva", "12345678909", "Rua A", 1};
-    tutores[1] = {2, "Maria Oliveira", "98765432100", "Rua B", 2};
-    contTutorS = 2;
-
-    // Animais
-    animais[0] = {1, "Rex", 1, 3, 20.5, 1};
-    animais[1] = {2, "Mimi", 2, 2, 4.2, 2};
-    contAnimalS = 2;
-
-    // Veterinários
-    veterinarios[0] = {1, "Dr. Carlos", "Av. Vet", 1};
-    veterinarios[1] = {2, "Dra. Ana", "Rua Vet", 2};
-    contVeterinarioS = 2;
-
-    // Consultas
-    consultas[0] = {1, 1, 1, converterParaTimeT("01/01/2022"), 150.00f};
-    consultas[1] = {2, 2, 2, converterParaTimeT("05/01/2023"), 200.00f};
-    consultas[2] = {2, 2, 2, converterParaTimeT("05/01/2024"), 200.00f};
-    consultas[3] = {2, 2, 2, converterParaTimeT("05/01/2024"), 200.00f};
-    consultas[4] = {2, 2, 2, converterParaTimeT("05/01/2025"), 200.00f};
-    consultas[5] = {2, 2, 2, converterParaTimeT("05/01/2026"), 200.00f};
-    contConsultaS = 6;
 
     //Menu
 
@@ -856,10 +838,8 @@ void leituraAnimais(struct animal a[], int &contAnimalS,
                 }
                 buscaBinariaRaca(r,contRacaS, codRaca);
                 a[i].codigoRaca = codRaca;
-                cout << "\n\tIdade: ";
-                cin >> a[i].idade;
-                cout << "\tPeso: ";
-                cin >> a[i].peso;
+                a[i].idade = validarIdadeAnimal();
+                a[i].peso = validarPesoAnimal();
                 int codTutor;
                 cout << "\tCódigo do Tutor: ";
                 cin >> codTutor;
@@ -1441,6 +1421,41 @@ bool validarCPF(const string& cpfEntrada) {
     return (digito1 == digitos[9] && digito2 == digitos[10]);
 }
 
+// Funções para validar idade
+
+int validarIdadeAnimal() {
+    int idade;
+    bool condicao = true;
+    while (condicao) {
+        cout << "\tIdade (Em anos): ";
+        cin >> idade;
+
+        if (idade < 0) {
+            cout << "\n\tA idade " << idade << " é inválida!\n\tPor favor digite uma idade válida (maior ou igual a 0).\n";
+        } else {
+            condicao = false;
+        }
+    }
+    return idade;
+}
+
+float validarPesoAnimal() {
+    float peso;
+    bool condicao = true;
+    while (condicao) {
+        cout << "\tPeso: ";
+        cin >> peso;
+
+        if (peso <= 0) {
+            cout << "\n\tO peso " << peso << " é inválido!\n\tPor favor digite uma peso válido (maior que 0).\n";
+        } else {
+            condicao = false;
+        }
+    }
+    return peso;
+}
+
+// Funções para busca de datas
 
 time_t converterParaTimeT(string diaParaSerConvertido) {
     tm data = {};
